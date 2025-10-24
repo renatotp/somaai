@@ -1,16 +1,10 @@
 // --- INICIALIZAÇÃO ---
-// Pega a referência do elemento HTML onde a cruzadinha será desenhada.
 const container = document.getElementById('cruzadinha-container');
-// Pega a referência do elemento HTML onde os números arrastáveis (respostas) serão colocados.
 const respostasContainer = document.getElementById('respostas-container');
 
-
 // --- DADOS DO JOGO ---
-// 'fases' é um array que guarda os dados de cada nível do jogo.
 let fases = [
     {
-        // 'cruzada' é uma matriz (um array de arrays) que representa o tabuleiro.
-        // Cada número ou sinal é uma célula. " " é uma célula vazia e 0 é um espaço para resposta.
         cruzada: [
             [" ", " ", " ", " ", "3", " ", " ", " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", "-", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -26,162 +20,410 @@ let fases = [
             [" ", " ", " ", " ", " ", " ", "=", " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", " ", 0, " ", " ", " ", " ", " ", " "]
         ],
-        // 'respostas' é um array com os números que o jogador poderá arrastar para os espaços da cruzadinha.
         respostas: [1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5]
     }
 ];
 
-// --- CONTROLE DE ESTADO DO JOGO ---
-// 'faseAtual' guarda o número do nível em que o jogador está. Começa em 0 (o primeiro nível).
-let faseAtual = 0;
-
-
-// --- FUNÇÃO PRINCIPAL PARA MONTAR O JOGO NA TELA ---
-// A função 'carregarFase' é responsável por desenhar o tabuleiro e as respostas de um determinado nível.
-function carregarFase(n) {
-    // Atualiza a variável 'faseAtual' com o número do nível que está sendo carregado.
-    faseAtual = n;
-    // Pega os dados da 'cruzada' e das 'respostas' da fase atual usando desestruturação.
-    let { cruzada, respostas } = fases[n];
-
-    // Inicia a criação do HTML da cruzadinha com a tag de abertura de uma tabela.
-    let html = '<table style="border-collapse: collapse; text-align: center; border:none;">';
-
-    // Loop 'for...of' para percorrer cada 'linha' da matriz 'cruzada'.
-    for (let linha of cruzada) {
-        // Para cada linha da matriz, cria uma linha de tabela (<tr>) no HTML.
-        html += '<tr>';
-        // Loop 'for...of' para percorrer cada 'celula' dentro da 'linha' atual.
-        for (let celula of linha) {
-            // Se o valor da célula for 0, é um espaço para resposta.
-            if (celula === 0) {
-                // Cria uma célula de tabela (<td>) com a classe 'dropzone' e eventos para arrastar e soltar.
-                html += `<td class="dropzone" 
-                     ondrop="drop(event)" 
-                     ondragover="allowDrop(event)" 
-                     style="width:40px;height:40px;background:#f9f9f9;border:1px solid #ccc;"></td>`;
-            // Se o valor da célula for " ", é um espaço em branco no design.
-            } else if (celula === " ") {
-                // Cria uma célula de tabela vazia e transparente, sem bordas.
-                html += `<td style="width:40px;height:40px;background:transparent;border:none;"></td>`;
-            // Se não for 0 nem " ", é um número ou operador fixo.
-            } else {
-                // Cria uma célula de tabela normal para exibir o número ou operador.
-                html += `<td style="width:40px;height:40px;font-weight:bold;border:1px solid #ccc;">${celula}</td>`;
-            }
-        }
-        // Fecha a tag da linha da tabela (</tr>) após preencher todas as suas células.
-        html += '</tr>';
+// gabarito esperado de cada célula dropável (linha-coluna → número correto)
+const gabaritos = {
+    0: {
+        "2-4": 2,
+        "2-8": 4,
+        "4-2": 4,
+        "4-6": 3,
+        "4-8": 1,
+        "6-0": 2,
+        "6-10": 3,
+        "6-12": 2,
+        "10-4": 5,
+        "10-6": 2,
+        "12-6": 3
     }
-    // Fecha a tag da tabela (</table>) após criar todas as linhas.
-    html += '</table>';
-    // Insere todo o HTML gerado para a tabela dentro do container da cruzadinha.
-    container.innerHTML = html;
+};
 
-    // --- GERAÇÃO DOS NÚMEROS ARRASTÁVEIS ---
-    // Usa o método 'map' para transformar o array de 'respostas' em um array de strings HTML.
-    respostasContainer.innerHTML = respostas.map((r, i) =>
-        // Para cada número 'r' no array, cria uma 'div' arrastável.
-        // A classe 'cor-${r}' aplica a cor correspondente ao número.
-        // 'draggable="true"' permite que o elemento seja arrastado.
-        // 'ondragstart' e 'ondragend' definem quais funções chamar ao iniciar e terminar de arrastar.
-        // 'id' cria um identificador único para cada círculo de resposta.
-        `<div class="resposta cor-${r}" draggable="true" 
-            ondragstart="drag(event)" 
-            ondragend="dragend(event)"
-            id="resp-${n}-${i}">
-            ${r}
-       </div>`
-    ).join(""); // O 'join("")' junta todas as strings HTML em uma única string.
+// --- ESTADO DO JOGO ---
+let faseAtual = 0;
+let vidas = 5;
+let jogoEncerrado = false;
+
+// Atualiza visualmente os corações
+function atualizarVidasUI() {
+    const vidasEl = document.getElementById('vidas-container');
+    if (!vidasEl) return;
+
+    let coracoes = '';
+    for (let i = 1; i <= 5; i++) {
+        coracoes += i <= vidas ? '❤️' : '🤍';
+    }
+    vidasEl.innerHTML = coracoes;
 }
 
+// Mensagem de status (acerto, erro, alerta, etc)
+function mostrarMensagemStatus(msg, cor = '#000') {
+    const fb = document.getElementById('feedback-cruzadinha');
+    if (fb) {
+        fb.textContent = msg;
+        fb.style.color = cor;
+        fb.style.fontWeight = 'bold';
+    }
+}
 
-// --- FUNÇÕES DE ARRASTAR E SOLTAR (DRAG AND DROP) ---
+// Bloqueia o tabuleiro quando acabou a vida
+function gameOver() {
+    jogoEncerrado = true;
 
-// 'drag' é chamada quando o usuário começa a arrastar um número.
+    // trava peças pra não arrastar mais
+    document.querySelectorAll('.resposta').forEach(el => {
+        el.setAttribute('draggable', 'false');
+        el.style.opacity = '0.4';
+        el.style.cursor = 'not-allowed';
+    });
+
+    // mensagem embaixo dos corações
+    mostrarMensagemStatus('💀 Suas vidas acabaram!', '#b71c1c');
+}
+
+// Mostra o modal de "acabaram as vidas"
+function abrirGameOverModal() {
+    const overlay = document.getElementById('gameover-overlay');
+    const msgBox = document.getElementById('gameover-msg');
+    const botaoOk = document.getElementById('btn-gameover-ok');
+
+    if (!overlay || !msgBox || !botaoOk) return;
+
+    msgBox.textContent = 'As vidas acabaram! Você vai precisar recomeçar.';
+    overlay.style.display = 'flex';
+
+    // garante que cada clique execute só uma vez
+    botaoOk.onclick = function () {
+        overlay.style.display = 'none';
+        reiniciarFase();
+    };
+}
+
+// Reinicia a fase atual, restaurando vidas
+function reiniciarFase() {
+    vidas = 5;
+    jogoEncerrado = false;
+    carregarFase(faseAtual);
+    mostrarMensagemStatus('Você ganhou 5 novas vidas. Tente novamente!', '#1976d2');
+}
+
+// Monta a fase visualmente
+function carregarFase(n) {
+    faseAtual = n;
+    const { cruzada, respostas } = fases[n];
+
+    let html = '<table style="border-collapse:collapse; border:none;">';
+
+    for (let r = 0; r < cruzada.length; r++) {
+        html += '<tr>';
+
+        for (let c = 0; c < cruzada[r].length; c++) {
+            const celula = cruzada[r][c];
+
+            if (celula === 0) {
+                html += `
+                    <td class="dropzone"
+                        data-row="${r}"
+                        data-col="${c}"
+                        ondrop="drop(event)"
+                        ondragover="allowDrop(event)"
+                        style="
+                            width:40px;
+                            height:40px;
+                            background:#f9f9f9;
+                            border:1px solid #ccc;
+                            text-align:center;
+                            vertical-align:middle;
+                            font-weight:bold;
+                        ">
+                    </td>
+                `;
+            } else if (celula === " ") {
+                html += `
+                    <td
+                        style="
+                            width:40px;
+                            height:40px;
+                            background:transparent;
+                            border:none;
+                        ">
+                    </td>
+                `;
+            } else {
+                html += `
+                    <td
+                        style="
+                            width:40px;
+                            height:40px;
+                            border:1px solid #ccc;
+                            text-align:center;
+                            vertical-align:middle;
+                            font-weight:bold;
+                        ">
+                        ${celula}
+                    </td>
+                `;
+            }
+        }
+
+        html += '</tr>';
+    }
+
+    html += '</table>';
+
+    // coloca a tabela pronta
+    container.innerHTML = html;
+
+    // monta as bolinhas de resposta
+    if (respostasContainer) {
+        respostasContainer.innerHTML = respostas
+            .map((r, i) => `
+                <div class="resposta cor-${r}"
+                     draggable="true"
+                     ondragstart="drag(event)"
+                     ondragend="dragend(event)"
+                     id="resp-${n}-${i}"
+                     style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        width:40px;
+                        height:40px;
+                        min-width:40px;
+                        min-height:40px;
+                        border-radius:50%;
+                        font-weight:bold;
+                        font-size:18px;
+                        cursor:grab;
+                        user-select:none;
+                    ">
+                    ${r}
+                </div>
+            `)
+            .join("");
+
+        // permitir devolver peça pro banco
+        respostasContainer.ondrop = retornarResposta;
+        respostasContainer.ondragover = allowDrop;
+    }
+
+    // destrava as peças se tava em game over
+    document.querySelectorAll('.resposta').forEach(el => {
+        el.setAttribute('draggable', 'true');
+        el.style.opacity = '1';
+        el.style.cursor = 'grab';
+    });
+
+    // reset flags
+    jogoEncerrado = false;
+
+    // atualiza corações
+    atualizarVidasUI();
+
+    // limpa mensagem de status
+    mostrarMensagemStatus('');
+}
+
+// Valida todas as respostas de uma vez (função opcional de auditoria geral)
+function validarRespostas() {
+    const dropzones = container.querySelectorAll('.dropzone');
+    const gabaritoFase = gabaritos[faseAtual] || {};
+    let total = 0;
+    let corretas = 0;
+
+    dropzones.forEach(dz => {
+        const row = dz.dataset.row;
+        const col = dz.dataset.col;
+        const chave = `${row}-${col}`;
+        const esperado = gabaritoFase[chave];
+
+        dz.style.transition = 'background-color 200ms ease';
+        dz.style.outline = '';
+
+        if (typeof esperado !== 'undefined') {
+            total++;
+            if (dz.firstElementChild) {
+                const valor = Number(dz.firstElementChild.textContent.trim());
+                if (!isNaN(valor) && valor === esperado) {
+                    dz.style.background = '#c8e6c9';
+                    dz.dataset.correta = 'true';
+                    corretas++;
+                } else {
+                    dz.style.background = '#ffcdd2';
+                    dz.dataset.correta = 'false';
+                }
+            } else {
+                dz.style.background = '#fff9c4';
+                dz.dataset.correta = 'false';
+            }
+        }
+    });
+
+    const feedbackEl = document.getElementById('feedback-cruzadinha');
+    if (feedbackEl) {
+        feedbackEl.textContent = `${corretas} de ${total} corretas`;
+        if (total > 0 && corretas === total) {
+            feedbackEl.textContent += ' — Parabéns! Todas corretas.';
+            feedbackEl.style.color = '#2e7d32';
+        } else {
+            feedbackEl.style.color = '#000';
+        }
+    }
+}
+
+// --- DRAG & DROP ---
 function drag(ev) {
-    // 'setData' anexa o ID do elemento arrastado aos dados da transferência. Isso permite saber qual elemento foi solto.
-    ev.dataTransfer.setData("text", ev.target.id);
+    if (jogoEncerrado) return; // se acabou o jogo, não deixa nem começar a arrastar
 
-    // 'setTimeout' com 0ms atraso esconde o elemento original. Isso dá a impressão de que ele "saiu" do lugar.
+    try {
+        ev.dataTransfer.effectAllowed = 'move';
+        ev.dataTransfer.setData('text/plain', ev.target.id);
+        if (ev.dataTransfer.setDragImage) {
+            ev.dataTransfer.setDragImage(ev.target, 20, 20);
+        }
+    } catch (e) {
+        try { ev.dataTransfer.setData('text', ev.target.id); } catch (_) {}
+    }
+
     setTimeout(() => {
-        ev.target.style.display = "none";
+        ev.target.style.display = 'none';
     }, 0);
 }
 
-// 'drop' é chamada quando um número é solto sobre uma 'dropzone' (célula da cruzadinha).
-function drop(ev) {
-    // 'preventDefault' impede o comportamento padrão do navegador (que seria abrir o dado como um link).
+function allowDrop(ev) {
     ev.preventDefault();
-    // Pega o ID do elemento que foi armazenado na função 'drag'.
-    const data = ev.dataTransfer.getData("text");
-    // Usa o ID para obter o elemento HTML do círculo que está sendo arrastado.
-    const resposta = document.getElementById(data);
-    // 'ev.target' é a célula (<td>) onde o círculo foi solto.
-    const dropzone = ev.target;
+    try { ev.dataTransfer.dropEffect = 'move'; } catch (e) {}
+}
 
-    // Condição para garantir que a ação só aconteça se a 'resposta' existir, se a célula for uma 'dropzone' e se estiver vazia.
-    if (resposta && dropzone.classList.contains('dropzone') && !dropzone.hasChildNodes()) {
-        
-        // Torna o círculo visível novamente (já que 'drag' o escondeu).
-        resposta.style.display = "flex";
-        
-        // 'appendChild' move o elemento 'resposta' para dentro da 'dropzone', preservando todos os seus estilos.
+function drop(ev) {
+    ev.preventDefault();
+
+    // se já acabou o jogo, ignora qualquer tentativa de soltar
+    if (jogoEncerrado) return;
+
+    let data = null;
+    try { data = ev.dataTransfer.getData('text/plain'); } catch (e) {}
+    if (!data) {
+        try { data = ev.dataTransfer.getData('text'); } catch (e) {}
+    }
+
+    const resposta = document.getElementById(data);
+
+    let dropzone = ev.target;
+    if (!dropzone || !dropzone.classList || !dropzone.classList.contains('dropzone')) {
+        dropzone = ev.target.closest ? ev.target.closest('.dropzone') : null;
+    }
+
+    if (
+        resposta &&
+        dropzone &&
+        dropzone.classList.contains('dropzone') &&
+        dropzone.children.length === 0
+    ) {
+        const originalParent = resposta.parentElement;
+
+        resposta.style.display = 'flex';
         dropzone.appendChild(resposta);
+
+        if (
+            originalParent &&
+            originalParent.classList &&
+            originalParent.classList.contains('dropzone') &&
+            originalParent !== dropzone
+        ) {
+            originalParent.style.background = '';
+            delete originalParent.dataset.correta;
+        }
+
+        // validação imediata daquela célula
+        const row = dropzone.dataset.row;
+        const col = dropzone.dataset.col;
+        const chave = `${row}-${col}`;
+        const gabaritoFase = gabaritos[faseAtual] || {};
+        const esperado = gabaritoFase[chave];
+
+        dropzone.style.outline = '';
+
+        if (typeof esperado !== 'undefined') {
+            const valor = Number(resposta.textContent.trim());
+            if (!isNaN(valor) && valor === esperado) {
+                // ACERTO ✅
+                dropzone.style.background = '#c8e6c9';
+                dropzone.dataset.correta = 'true';
+            } else {
+                // ERRO ❌
+                dropzone.style.background = 'rgba(255,0,0,0.6)';
+                dropzone.dataset.correta = 'false';
+
+                // perde 1 vida
+                vidas = vidas - 1;
+                atualizarVidasUI();
+
+                // aviso com 1 vida restante
+                if (vidas === 1) {
+                    mostrarMensagemStatus(
+                        '⚠️ Cuidado! Mais um erro e você vai ter que recomeçar!',
+                        '#f57c00'
+                    );
+                }
+
+                // acabou as vidas
+                if (vidas <= 0) {
+                    gameOver();           // trava o jogo e mostra msg vermelha
+                    abrirGameOverModal(); // abre o popup com botão OK
+                }
+            }
+        } else {
+            // célula que não precisa validar (só por segurança)
+            dropzone.style.background = '';
+            delete dropzone.dataset.correta;
+        }
     }
 }
 
-// 'allowDrop' é chamada continuamente enquanto um elemento é arrastado sobre uma 'dropzone'.
-function allowDrop(ev) {
-    // 'preventDefault' é essencial aqui para indicar que esta área aceita o "drop". Sem isso, o 'drop' não funcionaria.
-    ev.preventDefault();
-}
-
-// 'dragend' é chamada quando a operação de arrastar termina (seja com sucesso ou cancelada).
 function dragend(ev) {
-    // Verifica se o elemento original ainda existe na página (se não foi solto em uma 'dropzone' válida).
+    // se ainda existe o elemento, volta a aparecer
     if (document.getElementById(ev.target.id)) {
-        // Se ainda existir, restaura seu 'display' para 'flex' para que ele reapareça na área de respostas.
         ev.target.style.display = "flex";
     }
 }
 
-// 'retornarResposta' é chamada quando um número é solto de volta na área de respostas.
+// Soltar de volta no banco de respostas
 function retornarResposta(ev) {
-    // Previne o comportamento padrão do navegador.
     ev.preventDefault();
-    // Pega o ID do elemento arrastado.
-    const data = ev.dataTransfer.getData("text");
-    // Obtém o elemento HTML do círculo.
+
+    let data = null;
+    try { data = ev.dataTransfer.getData('text/plain'); } catch (e) {}
+    if (!data) {
+        try { data = ev.dataTransfer.getData('text'); } catch (e) {}
+    }
+
     const resposta = document.getElementById(data);
 
-    // Verifica se o círculo existe e se o local onde foi solto é o container principal de respostas.
     if (resposta && ev.currentTarget.id === 'respostas-container') {
-        
-        // Move o círculo de volta para o container de respostas, tirando-o da cruzadinha.
+        const parent = resposta.parentElement;
+        if (parent && parent.classList && parent.classList.contains('dropzone')) {
+            parent.style.background = '';
+            delete parent.dataset.correta;
+        }
+
         ev.currentTarget.appendChild(resposta);
+        resposta.style.display = 'flex';
     }
 }
 
-
-// --- FUNÇÃO PARA CARREGAR A LEGENDA ---
-// 'carregarLegenda' cria e exibe a legenda de números e cores na lateral.
+// --- LEGENDA LATERAL ---
 function carregarLegenda() {
-    // Pega a referência do container onde a legenda será inserida.
     const legendaContainer = document.querySelector('.legenda-container');
-    // Cria um array com os nomes dos números por extenso.
     const numerosPorExtenso = [
         "UM", "DOIS", "TRÊS", "QUATRO", "CINCO",
         "SEIS", "SETE", "OITO", "NOVE", "DEZ"
     ];
 
-    // Inicia uma string vazia que vai acumular o HTML da legenda.
     let htmlLegenda = '';
-    // Loop 'for' que vai de 1 a 10 para criar cada item da legenda.
     for (let i = 1; i <= 10; i++) {
-        // Para cada número, adiciona um bloco de HTML à string.
-        // Ele cria um 'span' para o número e outro para o nome por extenso.
-        // As classes 'cor-${i}' aplicam as cores correspondentes.
         htmlLegenda += `
             <div class="legenda-item">
                 <span class="legenda-numero cor-${i}">${i}</span>
@@ -189,13 +431,9 @@ function carregarLegenda() {
             </div>
         `;
     }
-    // Insere o HTML completo da legenda no seu container.
     legendaContainer.innerHTML = htmlLegenda;
 }
 
-
-// --- EXECUÇÃO INICIAL DO JOGO ---
-// Chama a função para carregar a primeira fase (fase 0) quando a página é aberta.
+// --- START ---
 carregarFase(0);
-// Chama a função para carregar a legenda de cores.
 carregarLegenda();
