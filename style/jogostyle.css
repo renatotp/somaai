@@ -43,30 +43,33 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 3px solid #000;
+  border: none;
   border-radius: 16px;
   padding: 20px;
-  background: #fff;
+  background: transparent;
   flex: 1;         /* mantém crescimento proporcional */
   min-width: 800px; /* aumenta o mínimo da largura da caixa esquerda */
 }
 
 .display {
-  border: 3px solid #000;
-  border-radius: 12px;
+  border: 3px solid black;
+  border-radius: 20px;
   width: 100%;
   height: 600px;
-  background: #fafafa;
+  background: blue;
   margin-bottom: 10px;
+  box-shadow: none;
 }
 
 .display2 {
-  border: 3px solid #000;
-  border-radius: 12px;
+  border: 3px solid black;
+  border-radius: 20px;
   width: 100%;
   height: 250px;
-  background: #fafafa;
+  background: white; 
+  box-shadow: none;
 }
+
 
 .operadores {
   display: flex;
@@ -262,53 +265,45 @@ body {
 .resposta {
   width: 40px;
   height: 40px;
-  border: 1px solid black;
-  border-radius: 50%;   /* deixa redondo */
-  background: #fff;
+  border: 2px solid #000;
+  border-radius: 0;
+  background-color: transparent !important; /* fundo totalmente transparente */
   display: flex;
-  justify-content: center; /* centraliza número no círculo */
-  align-items: center;     /* centraliza vertical */
+  justify-content: center;
+  align-items: center;
   cursor: grab;
   font-weight: bold;
   font-size: 18px;
-
   font-family: "Comic Sans MS", cursive, sans-serif;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4); /* sombra leve */
+}
+
+.resposta img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent !important;
+  mix-blend-mode: multiply;
+  display: block;
+  pointer-events: none;
+  user-select: none;
 }
 
 .resposta:active {
   cursor: grabbing;
 }
 
-#respostas-container {
-  display: flex;
-  flex-wrap: wrap;        /* permite quebrar linha */
-  justify-content: center; /* centraliza na horizontal */
-  align-items: center;     /* centraliza na vertical */
-  gap: 10px;               /* espaço entre os círculos */
-  padding: 10px;
-  box-sizing: border-box;
+/* --- Células da cruzadinha --- */
+.celula-ativa {
+  background: rgba(255, 255, 255, 0.08);     /* vidro translúcido leve */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);  /* sombra ao redor */
+  border: 1px solid rgba(0, 0, 0, 0.4);      /* borda sutil */
+  border-radius: 6px;
+  transition: transform 0.1s ease;
 }
 
-/* ===== CORES PARA OS NÚMEROS ===== */
-.resposta.cor-1 { background-color: #E63946; color: white; }
-.resposta.cor-2 { background-color: #F4A261; color: white; }
-.resposta.cor-3 { background-color: #E9C46A; color: #333; }
-.resposta.cor-4 { background-color: #2A9D8F; color: white; }
-.resposta.cor-5 { background-color: #264653; color: white; }
-.resposta.cor-6 { background-color: #A8DADC; color: #333; }
-.resposta.cor-7 { background-color: #457B9D; color: white; }
-.resposta.cor-8 { background-color: #1D3557; color: white; }
-.resposta.cor-9 { background-color: #FCA311; color: white; }
-.resposta.cor-10 { background-color: #9B5DE5; color: white; }
-
-/* Efeito hover para as novas cores */
-.resposta.cor-1:hover { background-color: #c42b39; }
-.resposta.cor-2:hover { background-color: #d1874a; }
-.resposta.cor-3:hover { background-color: #c7a752; }
-.resposta.cor-4:hover { background-color: #218074; }
-.resposta.cor-5:hover { background-color: #1d333d; }
-.resposta.cor-6:hover { background-color: #8dbcbD; }
-.resposta.cor-7:hover { background-color: #38647e; }
-.resposta.cor-8:hover { background-color: #14243b; }
-.resposta.cor-9:hover { background-color: #d98c0d; }
-.resposta.cor-10:hover { background-color: #8247c7; }
+.celula-ativa:hover {
+  transform: scale(1.05);                    /* leve zoom ao passar o mouse */
+}
