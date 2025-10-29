@@ -351,45 +351,10 @@ function retornarResposta(ev) {
     }
 }
 
-// --- LEGENDA ---
-function carregarLegenda() {
-    const legendaContainer = document.querySelector('.legenda-container');
-    if (!legendaContainer) return;
 
-    const numerosPorExtenso = ["UM","DOIS","TRÊS","QUATRO","CINCO","SEIS","SETE","OITO","NOVE","DEZ"];
-
-    legendaContainer.innerHTML = numerosPorExtenso.map((nome, i) => `
-        <div class="legenda-item">
-            <span class="legenda-numero cor-${i+1}"
-                  style="
-                    width:35px;
-                    height:35px;
-                    border-radius:50%;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    border:2px solid #000;
-                    background:transparent !important;
-                    overflow:hidden;
-                  ">
-                <img 
-                    src="./style/imagens/Numerais/${i+1}.png"
-                    alt="${i+1}"
-                    style="
-                        width:100%;
-                        height:100%;
-                        object-fit:contain;
-                        background:transparent !important;
-                        mix-blend-mode:multiply;
-                        display:block;
-                    "
-                />
-            </span>
-            <span class="legenda-nome cor-${i+1}">${nome}</span>
-        </div>
-    `).join('');
-}
 
 // --- START ---
 carregarFase(0);
-carregarLegenda();
+
+
+// forçando um novo commit
