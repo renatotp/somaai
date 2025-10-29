@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "index.html", "use": "@vercel/static" },
+      { "src": "jogo.html", "use": "@vercel/static" },
+      { "src": "*.css", "use": "@vercel/static" },
+      { "src": "*.js", "use": "@vercel/static" },
+      { "src": "imagens/**", "use": "@vercel/static" },
+      { "src": "style/**", "use": "@vercel/static" }
+    ],
+    "routes": [
+      { "src": "/", "dest": "/index.html" },
+      { "src": "/jogo", "dest": "/jogo.html" }
+    ]
+  }
+  
