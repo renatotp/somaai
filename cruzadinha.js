@@ -2,12 +2,14 @@
 const container = document.getElementById('cruzadinha-container');
 const respostasContainer = document.getElementById('respostas-container');
 
-// 🔸 Renderiza a imagem do número
-function getImagemNumero(valor) {
+// 🔸 Renderiza a imagem para números OU símbolos (+, -, =)
+function getImagemSprite(valor) {
+    // valor pode ser '1'..'9', '+', '-', '='
+    const safe = String(valor);
     return `
         <img 
-            src="./style/imagens/Numerais/${valor}.png" 
-            alt="${valor}" 
+            src="./style/imagens/Numerais/${safe}.png" 
+            alt="${safe}" 
             style="
                 width: 100%;
                 height: 100%;
@@ -154,35 +156,28 @@ function carregarFase(n) {
                         border:none;
                     "></td>`;
             } else {
-                // célula com conteúdo fixo (número ou símbolo)
-                const ehNumeroSimples = /^[0-9]$/.test(String(celula));
-                const conteudoCelula = ehNumeroSimples
-                    ? `
-                        <div style="
-                            width:40px;
-                            height:40px;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
-                            background:white;
-                            border:none;
-                            padding:0;
-                        ">
-                            <img 
-                                src="./style/imagens/Numerais/${celula}.png" 
-                                alt="${celula}"
-                                style="
-                                    width:32px;
-                                    height:32px;
-                                    object-fit:contain;
-                                    background:transparent !important;
-                                    mix-blend-mode:multiply;
-                                    display:block;
-                                "
-                            />
-                        </div>
-                      `
-                    : celula;
+                // célula com conteúdo fixo (número OU símbolo)
+                const valor = String(celula);
+                const ehNumeroSimples = /^[0-9]$/.test(valor);
+                const ehSimbolo = ['+', '-', '='].includes(valor);
+
+                // renderiza sempre como imagem (número OU símbolo)
+                const blocoImagem = `
+                    <div style="
+                        width:40px;
+                        height:40px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        background:white;
+                        border:none;
+                        padding:0;
+                    ">
+                        ${getImagemSprite(valor)}
+                    </div>
+                `;
+
+                const conteudoCelula = (ehNumeroSimples || ehSimbolo) ? blocoImagem : valor;
 
                 html += `
                     <td style="
@@ -229,20 +224,7 @@ function carregarFase(n) {
                     padding:0;
                     overflow:hidden;
                  ">
-                <img 
-                    src="./style/imagens/Numerais/${valor}.png"
-                    alt="${valor}"
-                    style="
-                        width:100%;
-                        height:100%;
-                        object-fit:contain;
-                        background:transparent !important;
-                        mix-blend-mode:multiply;
-                        display:block;
-                        pointer-events:none;
-                        user-select:none;
-                    "
-                />
+                ${getImagemSprite(valor)}
             </div>
         `).join("");
 
@@ -351,10 +333,7 @@ function retornarResposta(ev) {
     }
 }
 
-
-
 // --- START ---
 carregarFase(0);
-
 
 // forçando um novo commit
