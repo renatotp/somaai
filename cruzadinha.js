@@ -2,6 +2,8 @@
 const container = document.getElementById('cruzadinha-container');
 const respostasContainer = document.getElementById('respostas-container');
 
+
+
 // 🔸 Renderiza a imagem para números OU símbolos (+, -, =)
 function getImagemSprite(valor) {
     // valor pode ser '1'..'9', '+', '-', '='
@@ -22,6 +24,11 @@ function getImagemSprite(valor) {
             "
         />
     `;
+}
+
+function tocarSom(arquivo) {
+    const audio = new Audio(arquivo);
+    audio.play();
 }
 
 // --- DADOS DO JOGO ---
@@ -284,13 +291,22 @@ function drop(ev) {
         if (typeof esperado !== 'undefined') {
             const valor = Number(resposta.dataset.numero);
             if (valor === esperado) {
+                // SEU CÓDIGO DE ACERTO ORIGINAL
                 dropzone.style.background = '#c8e6c9';
                 resposta.style.background = '#c8e6c9';
                 dropzone.dataset.correta = 'true';
+                
+                // 👇 ÚNICA ADIÇÃO PARA ACERTO
+                tocarSom('./style/bgm/acerto.mp3');
+
             } else {
+                // SEU CÓDIGO DE ERRO ORIGINAL
                 dropzone.style.background = 'rgba(255,0,0,0.6)';
                 resposta.style.background = 'rgba(255,0,0,0.6)';
                 dropzone.dataset.correta = 'false';
+
+                // 👇 ÚNICA ADIÇÃO PARA ERRO
+                tocarSom('./style/bgm/erro.mp3');
 
                 vidas--;
                 atualizarVidasUI();

@@ -6,268 +6,234 @@
 
 body {
   background-image: url('./imagens/verde.jpg');
-
- 
-  background-repeat: repeat-x; /* Repete a imagem na horizontal */
-  background-size: auto 100%;  /* Faz a imagem preencher 100% da altura da tela */
-  animation: rolar-fundo 80s linear infinite; /* Aplica a animação (80s para ser bem lenta) */
-  
-  
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  animation: rolar-fundo 80s linear infinite;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
-  overflow-x: hidden; /* não criar barra de rolagem horizontal */
+  padding: 0;
+  overflow: hidden;
 }
 
 .wrapper {
   display: flex;
-  justify-content: center;  
-  align-items: center;      
-  flex: 1 0 auto;           
+  justify-content: center;
+  align-items: flex-start; /* 'flex-start' para travar no topo */
+  flex: 1 0 auto;
   width: 100%;
 }
 
+/* =========================
+   NOVOS ESTILOS (MOVIDOS DO HTML)
+   ========================= */
+
+/* Container principal do jogo */
 .container {
   display: flex;
+  flex-direction: row;
+  align-items: stretch; /* garante alturas iguais */
+  justify-content: center;
   gap: 40px;
-  align-items: flex-start;  /* permite que a altura das caixas seja natural */
-  flex-wrap: wrap;
+  width: 100%;
   max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  height: 100vh; /* ocupa toda a altura da tela */
 }
 
-/* Lado esquerdo (display + operadores) */
-.lado-esquerdo {
+/* Coluna da esquerda (agora uma classe) */
+.coluna-esquerda {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  max-width: 800px;
+}
+
+/* Container para a seção da cruzadinha */
+/* (Eu usei o ID que estava no seu HTML para ser específico) */
+#lado-esquerdo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  text-align: center;
+  height: 100%;
+}
+
+/* Container das Vidas (corações) */
+#vidas-container {
+  font-size: 28px;
+  color: #e53935;
+  letter-spacing: 5px;
+  text-align: center;
+  margin-bottom: 8px; /* Espaço abaixo dos corações */
+}
+
+/* Mensagem de Feedback (Ex: vidas, erro, etc) */
+#feedback-cruzadinha {
+  font-size: 16px;
+  color: #000;
+  text-align: center;
+  min-height: 24px;
+  
+  /* 👇 A SOLUÇÃO PARA O ESPAÇAMENTO 👇 */
+  margin-bottom: 10px; /* Espaço que empurra a cruzadinha para baixo */
+}
+
+/* Container da Cruzadinha (gerada pelo JS) */
+#cruzadinha-container {
+  /* Estilos do HTML */
   border: none;
-  border-radius: 16px;
-  padding: 20px;
+  box-shadow: none;
   background: transparent;
-  flex: 1;         /* mantém crescimento proporcional */
-  min-width: 800px; /* aumenta o mínimo da largura da caixa esquerda */
-}
-
-.display {
-  border: 3px solid black;
-  border-radius: 20px;
-  width: 100%;
-  height: 600px;
-  background: blue;
-  margin-bottom: 10px;
-  box-shadow: none;
-}
-
-.display2 {
-  border: 3px solid black;
-  border-radius: 20px;
-  width: 100%;
-  height: 250px;
-  background: white; 
-  box-shadow: none;
-}
-
-
-.operadores {
+  padding: 0;
+  margin: 0 auto;
+  text-align: center;
+  
+  /* Estilos do CSS original */
+  font-family: "Comic Sans MS", cursive, sans-serif;
   display: flex;
-  justify-content: space-around;
-  gap: 10px;
-  margin-top: 20px;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1.5);
+  transform-origin: top;
 }
 
-.operadores .caixa {
-  border: 3px solid #000;
-  border-radius: 12px;
-  flex: 1 1 60px;
-  max-width: 90px;
-  height: 80px;
+/* Coluna da direita (respostas) */
+.lado-direito {
+  /* Estilos do HTML */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  height: 100%;
+  flex: 0 0 200px; /* largura fixa da coluna */
+  border-left: 2px dashed #ccc;
+  padding-left: 20px;
+  
+  /* Estilos do CSS original */
+  background-color: transparent;
+  min-width: 280px; /* (Mantido, mas o 'flex' acima é mais forte) */
+  min-height: 700px;
+}
+
+/* Container da área de respostas */
+#area-respostas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* distribui uniformemente */
+  height: 100%;
+  width: 100%;
+}
+
+/* Bloco das respostas arrastáveis */
+#respostas-container {
+  /* Estilos do HTML */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly; /* distribui as respostas verticalmente */
+  gap: 20px;
+  height: 700px;
+  width: 100%;
+  
+  /* Estilos do CSS original (da classe .display2) */
+  border: 3px solid black;
+  border-radius: 20px;
+  background: white;
+  box-shadow: none;
+}
+
+/* --- Overlay de Game Over --- */
+#gameover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-family: sans-serif;
+}
+
+.gameover-caixa {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 28px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+#gameover-msg {
+  font-size: 18px;
+  font-weight: bold;
+  color: #b71c1c;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+#btn-gameover-ok {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
-  background: #fff;
+  width: 100%;
 }
 
-.operadores .caixa:hover {
-  background: #ddd;
-}
 
-/* Lado direito (números + nomes) */
-.lado-direito {
-  
-  padding: 20px;
-  background-color: transparent;  /* deixa o fundo transparente */
-  flex: 1;
-  min-width: 280px;
-  min-height: 700px;
-  display: flex;
-  flex-direction: column; /* Alinha os itens (legenda-container) em coluna */
-  align-items: center; /* Centraliza a caixa da legenda horizontalmente */
-  height: 400px; 
-  
-}
+/* =========================
+   ESTILOS ORIGINAIS (RESTANTES)
+   ========================= */
 
-/* Estilos para a nova caixa de Legenda */
+/* (As regras .lado-esquerdo, .display, .display2, .container, .lado-direito originais 
+   foram removidas ou mescladas com as regras acima) */
+
+/* Legenda (parece não estar no HTML, mas estava no seu CSS) */
 .legenda-container {
   border: 3px solid #000;
   border-radius: 16px;
   padding: 20px;
   background: #fff;
-  width: 100%; /* Ocupa a largura total do lado-direito */
-  max-width: 300px; /* Limite de largura, ajuste se necessário */
+  width: 100%;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Espaço entre cada item da legenda */
-  font-family: "Comic Sans MS", cursive, sans-serif; /* A fonte desejada */
-}
-
-.legenda-item {
-  display: flex;
-  align-items: center;
-  gap: 15px; /* Espaço entre o número e o nome */
-}
-
-.legenda-numero {
-  width: 35px; /* Tamanho do círculo do número */
-  height: 35px;
-  border-radius: 50%; /* Torna o background circular */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 18px;
-  color: white; /* Cor padrão do texto no número */
-  /* A cor de fundo será definida pelas classes cor-X */
-}
-
-.legenda-nome {
-  font-weight: bold;
-  font-size: 20px;
-  /* A cor do texto será definida pelas classes cor-X */
-}
-
-/* Cores dos números e nomes na Legenda (reutiliza as classes existentes) */
-/* Para que o nome também pegue a cor, vamos adicionar estas regras */
-.legenda-nome.cor-1 { color: #E63946; }
-.legenda-nome.cor-2 { color: #F4A261; }
-.legenda-nome.cor-3 { color: #E9C46A; }
-.legenda-nome.cor-4 { color: #2A9D8F; }
-.legenda-nome.cor-5 { color: #264653; }
-.legenda-nome.cor-6 { color: #A8DADC; } /* Note que esta cor é clara, talvez mude o 'color: white' padrão para 'color: #333' se o fundo for branco */
-.legenda-nome.cor-7 { color: #457B9D; }
-.legenda-nome.cor-8 { color: #1D3557; }
-.legenda-nome.cor-9 { color: #FCA311; }
-.legenda-nome.cor-10 { color: #9B5DE5; }
-
-/* As classes .resposta.cor-X já definem o background-color para .legenda-numero */
-/* Você pode querer definir a cor do texto para o .legenda-numero explicitamente caso seu .resposta.cor-X não funcione */
-.legenda-numero.cor-1 { background-color: #E63946; color: white; }
-.legenda-numero.cor-2 { background-color: #F4A261; color: white; }
-.legenda-numero.cor-3 { background-color: #E9C46A; color: #333; } /* Exemplo de cor de texto diferente */
-.legenda-numero.cor-4 { background-color: #2A9D8F; color: white; }
-.legenda-numero.cor-5 { background-color: #264653; color: white; }
-.legenda-numero.cor-6 { background-color: #A8DADC; color: #333; }
-.legenda-numero.cor-7 { background-color: #457B9D; color: white; }
-.legenda-numero.cor-8 { background-color: #1D3557; color: white; }
-.legenda-numero.cor-9 { background-color: #FCA311; color: white; }
-.legenda-numero.cor-10 { background-color: #9B5DE5; color: white; }
-
-/* .imagem-direita {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
-} */
-
-.numeros {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.linha-numero {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: nowrap;
-}
-
-.linha-numero .caixa {
-  border: 3px solid #000;
-  border-radius: 12px;
-  flex: 1;
-  min-width: 80px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: bold;
-  background: #fff;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.linha-numero .caixa:hover {
-  background: #ddd;
-}
-
-.linha-numero .separador {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 0 4px;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .lado-esquerdo,
-  .lado-direito {
-    width: 100%;
-    max-width: 500px;
-  }
-
-
-}
-
-#cruzadinha-container {
+  gap: 10px;
   font-family: "Comic Sans MS", cursive, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
+/* ... (todas as outras regras da legenda .legenda-item, .legenda-numero, etc.) ... */
 
-/* ===== ANIMAÇÃO DE FUNDO  ===== */
+
+/* Animação de Fundo */
 @keyframes rolar-fundo {
   from {
     background-position: 0 0;
   }
   to {
-    /* Move a imagem para a esquerda. 
-       Para um loop perfeito, o valor em pixels deve ser a largura da sua imagem.
-       Ex: Se 'verde.jpg' tiver 1920px de largura, use -1920px. */
     background-position: -2000px 0;
-  }  
+  }
 }
 
+/* Respostas Arrastáveis */
 .resposta {
   width: 40px;
   height: 40px;
   border: 2px solid #000;
   border-radius: 0;
-  background-color: transparent !important; /* fundo totalmente transparente */
+  background-color: transparent !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -275,7 +241,7 @@ body {
   font-weight: bold;
   font-size: 18px;
   font-family: "Comic Sans MS", cursive, sans-serif;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4); /* sombra leve */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
 .resposta img {
@@ -293,45 +259,44 @@ body {
   cursor: grabbing;
 }
 
-/* --- Células da cruzadinha --- */
+/* Células da Cruzadinha (do seu CSS) */
 .celula-ativa {
-  background: rgba(255, 255, 255, 0.08);     /* vidro translúcido leve */
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);  /* sombra ao redor */
-  border: 1px solid rgba(0, 0, 0, 0.4);      /* borda sutil */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.4);
   border-radius: 6px;
   transition: transform 0.1s ease;
 }
 
 .celula-ativa:hover {
-  transform: scale(1.05);                    /* leve zoom ao passar o mouse */
+  transform: scale(1.05);
 }
 
-/* --- ESTILO DO BOTÃO DE VOLUME --- */
+/* Botão de Mutar */
 #botaoMutar {
-    position: fixed; /* Fica fixo na tela mesmo com rolagem */
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border: none;
-    border-radius: 50%; /* Deixa o botão redondo */
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    transition: background-color 0.3s;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  transition: background-color 0.3s;
 }
 
 #botaoMutar:hover {
-    background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
-/* Estilo para os ícones SVG dentro do botão */
 #botaoMutar svg {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }

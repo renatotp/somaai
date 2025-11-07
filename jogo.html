@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SOMA AI - JOGO</title>
-
   <link rel="stylesheet" href="./style/jogostyle.css">
 </head>
 
@@ -13,182 +12,39 @@
 
   <div class="wrapper">
 
-    <!-- CONTAINER PRINCIPAL: duas colunas lado a lado -->
-    <div class="container"
-         style="
-           display: flex;
-           flex-direction: row;
-           align-items: stretch; /* garante alturas iguais */
-           justify-content: center;
-           gap: 40px;
-           width: 100%;
-           max-width: 1200px;
-           margin: 0 auto;
-           padding: 20px;
-           height: 100vh; /* ocupa toda a altura da tela */
-         ">
+    <div class="container">
 
-      <!-- ========= COLUNA ESQUERDA ========= -->
-      <div class="coluna-esquerda"
-           style="
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-             justify-content: flex-start;
-             flex: 1;
-             max-width: 800px;
-           ">
+      <div class="coluna-esquerda">
 
-        <!-- 🔸 SEÇÃO DA CRUZADINHA -->
-        <div class="lado-esquerdo"
-             id="lado-esquerdo"
-             style="
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-               justify-content: flex-start;
-               width: 100%;
-               text-align: center;
-               height: 100%;
-             ">
+        <div class="lado-esquerdo" id="lado-esquerdo">
 
-          <!-- Corações -->
-          <div id="vidas-container"
-               style="
-                 font-size: 28px;
-                 color: #e53935;
-                 letter-spacing: 5px;
-                 text-align: center;
-                 margin-bottom: 8px;
-               ">
+          <div id="vidas-container">
             ❤️❤️❤️❤️❤️
           </div>
 
-          <!-- Feedback -->
-          <div id="feedback-cruzadinha"
-               style="
-                 font-size: 16px;
-                 color: #000;
-                 text-align: center;
-                 min-height: 24px;
-                 margin-bottom: 10px;
-               ">
-          </div>
+          <div id="feedback-cruzadinha">
+            </div>
 
-          <!-- Cruzadinha (tabela gerada via JS) -->
-          <div id="cruzadinha-container"
-               class="display"
-               style="
-                 border: none;
-                 box-shadow: none;
-                 background: transparent;
-                 padding: 0;
-                 margin: 0 auto;
-                 text-align: center;
-               ">
-            <!-- A TABELA DA CRUZADINHA É INSERIDA VIA JS -->
-          </div>
+          <div id="cruzadinha-container" class="display">
+            </div>
         </div>
       </div>
-      <!-- ========= FIM DA COLUNA ESQUERDA ========= -->
+      <div class="lado-direito">
 
+        <div id="area-respostas">
 
-      <!-- ========= COLUNA DIREITA ========= -->
-      <!-- mesma altura da cruzadinha -->
-      <div class="lado-direito"
-           style="
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-             justify-content: center;
-             height: 100%;
-             flex: 0 0 200px; /* largura fixa da coluna */
-             border-left: 2px dashed #ccc;
-             padding-left: 20px;
-           ">
-
-        <!-- 🔸 SEÇÃO DAS RESPOSTAS -->
-        <div id="area-respostas"
-             style="
-               display: flex;
-               flex-direction: column;
-               align-items: center;
-               justify-content: space-between; /* distribui uniformemente */
-               height: 100%;
-               width: 100%;
-             ">
-
-          <div id="respostas-container"
-               class="display2"
-               ondrop="retornarResposta(event)"
-               ondragover="allowDrop(event)"
-               style="
-                 display: flex;
-                 flex-direction: column;
-                 align-items: center;
-                 justify-content: space-evenly; /* distribui as respostas verticalmente */
-                 gap: 20px;
-                 height: 100%;
-                 width: 100%;
-               ">
-            <!-- OS BOTÕES/RESPOSTAS SÃO INSERIDOS VIA JS -->
-          </div>
+          <div id="respostas-container" class="display2" ondrop="retornarResposta(event)" ondragover="allowDrop(event)">
+            </div>
         </div>
       </div>
-      <!-- ========= FIM DA COLUNA DIREITA ========= -->
+      </div> </div> <div id="gameover-overlay">
+    <div class="gameover-caixa">
 
-    </div> <!-- fim .container -->
-
-  </div> <!-- fim .wrapper -->
-
-
-  <!-- =========================
-       OVERLAY DE GAME OVER
-       ========================= -->
-  <div id="gameover-overlay"
-       style="
-          position: fixed;
-          inset: 0;
-          background: rgba(0,0,0,0.6);
-          display: none;
-          align-items: center;
-          justify-content: center;
-          z-index: 9999;
-          font-family: sans-serif;
-       ">
-    <div style="
-          background: #fff;
-          border-radius: 16px;
-          padding: 24px 28px;
-          max-width: 320px;
-          width: 90%;
-          text-align: center;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-       ">
-
-      <div id="gameover-msg"
-           style="
-              font-size: 18px;
-              font-weight: bold;
-              color: #b71c1c;
-              line-height: 1.4;
-              margin-bottom: 20px;
-           ">
+      <div id="gameover-msg">
         As vidas acabaram! Você vai precisar recomeçar.
       </div>
 
-      <button id="btn-gameover-ok"
-              style="
-                 background: #1976d2;
-                 color: #fff;
-                 border: none;
-                 border-radius: 10px;
-                 padding: 10px 16px;
-                 font-size: 16px;
-                 font-weight: bold;
-                 cursor: pointer;
-                 width: 100%;
-              ">
+      <button id="btn-gameover-ok">
         OK
       </button>
 
