@@ -2,15 +2,13 @@
 const container = document.getElementById('cruzadinha-container');
 const respostasContainer = document.getElementById('respostas-container');
 
-
-
 // 🔸 Renderiza a imagem para números OU símbolos (+, -, =)
 function getImagemSprite(valor) {
     // valor pode ser '1'..'9', '+', '-', '='
     const safe = String(valor);
     return `
         <img 
-            src="./style/imagens/Numerais/${safe}.png" 
+            src="./assets/imagens/Numerais/${safe}.png" 
             alt="${safe}" 
             style="
                 width: 100%;
@@ -32,7 +30,9 @@ function tocarSom(arquivo) {
 }
 
 // --- DADOS DO JOGO ---
+// 👇 ADIÇÃO 1: ADICIONE OS DADOS DAS SUAS 5 FASES AQUI 👇
 let fases = [
+    // --- FASE 0 (A sua fase atual) ---
     {
         cruzada: [
             [" ", " ", " ", " ", "3", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -50,28 +50,56 @@ let fases = [
             [" ", " ", " ", " ", " ", " ", 0, " ", " ", " ", " ", " ", " "]
         ],
         respostas: [1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5]
+    },
+
+    // --- FASE 1 (NOVA) ---
+    {
+        cruzada: [ /* Crie a matriz da fase 2 aqui */ ],
+        respostas: [ /* Defina as respostas da fase 2 */ ]
+    },
+    
+    // --- FASE 2 (NOVA) ---
+    {
+        cruzada: [ /* Crie a matriz da fase 3 aqui */ ],
+        respostas: [ /* Defina as respostas da fase 3 */ ]
+    },
+    
+    // --- FASE 3 (NOVA) ---
+    {
+        cruzada: [ /* Crie a matriz da fase 4 aqui */ ],
+        respostas: [ /* Defina as respostas da fase 4 */ ]
+    },
+    
+    // --- FASE 4 (NOVA) ---
+    {
+        cruzada: [ /* Crie a matriz da fase 5 aqui */ ],
+        respostas: [ /* Defina as respostas da fase 5 */ ]
     }
 ];
 
 // gabarito esperado
+// 👇 ADIÇÃO 1 (CONTINUAÇÃO): ADICIONE OS GABARITOS DAS 5 FASES 👇
 const gabaritos = {
     0: {
-        "2-4": 2,
-        "2-8": 4,
-        "4-2": 4,
-        "4-6": 3,
-        "4-8": 1,
-        "6-0": 2,
-        "6-10": 3,
-        "6-12": 2,
-        "10-4": 5,
-        "10-6": 2,
-        "12-6": 3
+        "2-4": 2, "2-8": 4, "4-2": 4, "4-6": 3, "4-8": 1,
+        "6-0": 2, "6-10": 3, "6-12": 2, "10-4": 5, "10-6": 2, "12-6": 3
+    },
+    1: {
+        // Crie o gabarito "linha-coluna": resposta para a fase 2
+    },
+    2: {
+        // Crie o gabarito "linha-coluna": resposta para a fase 3
+    },
+    3: {
+        // Crie o gabarito "linha-coluna": resposta para a fase 4
+    },
+    4: {
+        // Crie o gabarito "linha-coluna": resposta para a fase 5
     }
 };
 
 // --- ESTADO DO JOGO ---
-let faseAtual = 0;
+let faseAtual = 0; // Esta variável será atualizada pelo código de carregamento
 let vidas = 5;
 let jogoEncerrado = false;
 
@@ -120,13 +148,20 @@ function abrirGameOverModal() {
 function reiniciarFase() {
     vidas = 5;
     jogoEncerrado = false;
-    carregarFase(faseAtual);
+    carregarFase(faseAtual); // Recarrega a fase atual
     mostrarMensagemStatus('Você ganhou 5 novas vidas. Tente novamente!', '#1976d2');
 }
 
 // --- MONTA A FASE VISUALMENTE ---
 function carregarFase(n) {
-    faseAtual = n;
+    // Verifica se a fase 'n' existe nos dados
+    if (!fases[n] || !gabaritos[n]) {
+        console.error(`Fase ${n} não encontrada! Carregando fase 0.`);
+        n = 0; // Garante que o jogo não quebre
+    }
+    
+    faseAtual = n; // Define a fase atual do jogo
+    
     const { cruzada, respostas } = fases[n];
     let html = '<table style="border-collapse:collapse; border:none; background:transparent;">';
 
@@ -296,8 +331,10 @@ function drop(ev) {
                 resposta.style.background = '#c8e6c9';
                 dropzone.dataset.correta = 'true';
                 
-                // 👇 ÚNICA ADIÇÃO PARA ACERTO
-                tocarSom('./style/bgm/acerto.mp3');
+                tocarSom('./assets/bgm/acerto.mp3');
+                
+                // 👇 ADIÇÃO 2: CHAMA A VERIFICAÇÃO DE VITÓRIA 👇
+                verificarVitoria(); 
 
             } else {
                 // SEU CÓDIGO DE ERRO ORIGINAL
@@ -305,8 +342,7 @@ function drop(ev) {
                 resposta.style.background = 'rgba(255,0,0,0.6)';
                 dropzone.dataset.correta = 'false';
 
-                // 👇 ÚNICA ADIÇÃO PARA ERRO
-                tocarSom('./style/bgm/erro.mp3');
+                tocarSom('./assets/bgm/erro.mp3');
 
                 vidas--;
                 atualizarVidasUI();
@@ -349,7 +385,73 @@ function retornarResposta(ev) {
     }
 }
 
+
+// --- 👇 ADIÇÃO 3: NOVAS FUNÇÕES DE VITÓRIA E PROGRESSO ---
+/** Salva o progresso no localStorage */
+function desbloquearProximaFase() {
+  // 1. Calcula qual é o próximo nível (ex: joguei o 0, desbloqueio o 1)
+  let proximoNivel = faseAtual + 1;
+
+  // 2. Pega o nível máximo que já estava salvo (ou 0 se for a 1ª vez)
+  let nivelMaximoSalvo = parseInt(localStorage.getItem('nivelMaximoSomaAI')) || 0;
+
+  // 3. Se o próximo nível (1) for maior que o progresso salvo (0)...
+  if (proximoNivel > nivelMaximoSalvo) {
+    // 4. Salva o novo progresso!
+    localStorage.setItem('nivelMaximoSomaAI', proximoNivel);
+    console.log("Progresso salvo! Nível " + proximoNivel + " desbloqueado.");
+  }
+}
+
+/** Verifica se o jogador completou todas as respostas da fase */
+function verificarVitoria() {
+  // 1. Pega o total de respostas necessárias para esta fase (contando o gabarito)
+  //    Certifica-se de que o gabarito existe antes de contar
+  const gabaritoFase = gabaritos[faseAtual];
+  if (!gabaritoFase) return; // Sai se não houver gabarito
+  
+  const totalRespostas = Object.keys(gabaritoFase).length;
+
+  // 2. Pega quantas respostas corretas estão no tabuleiro
+  const respostasCorretas = document.querySelectorAll('.dropzone[data-correta="true"]').length;
+
+  // 3. Compara
+  if (respostasCorretas === totalRespostas) {
+    
+    // --- O JOGADOR VENCEU! ---
+    
+    // 1. Salva o progresso para desbloquear a próxima fase
+    desbloquearProximaFase();
+    
+    // 2. Toca o som de vitória
+    tocarSom('./assets/bgm/acerto.mp3');
+    
+    // 3. Avisa o jogador e o manda de volta para o menu de fases
+    setTimeout(() => {
+      alert('Fase Concluída! Você desbloqueou a próxima fase!');
+      window.location.href = 'fases.html'; // Volta para a seleção de fases
+    }, 500); // 500ms de espera para o som tocar
+  }
+}
+
+
 // --- START ---
-carregarFase(0);
+// 👇 ADIÇÃO 4: SUBSTITUA O 'carregarFase(0);' NO FINAL ---
+
+// 1. Pega os parâmetros da URL (ex: ?fase=1)
+const urlParams = new URLSearchParams(window.location.search);
+
+// 2. Converte o parâmetro 'fase' para um número. Se não existir, usa 0.
+let faseId = parseInt(urlParams.get('fase')) || 0;
+
+// 3. Verifica se a faseId é válida
+if (faseId < 0 || faseId >= fases.length || !fases[faseId]) {
+    console.warn("ID da fase inválido. Carregando fase 0.");
+    faseId = 0; 
+}
+
+// 4. Carrega a fase correta vinda da URL
+carregarFase(faseId);
+
 
 // forçando um novo commit

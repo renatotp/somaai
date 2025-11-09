@@ -5,16 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Soma Ai - Entrada</title>
 
-  <link rel="stylesheet" href="./style/indexstyle.css">
+  <link rel="stylesheet" href="./assets/indexstyle.css">
 </head>
 
 <body>
 
-  <img src="./style/imagens/logo2.png" alt="Logo Soma AI" class="logo">
+  <img src="./assets/imagens/logo2.png" alt="Logo Soma AI" class="logo">
   
-  <a href="./jogo.html" class="btn">COMEÇAR</a>
+  <div id="menu-container">
+    <a href="#" id="btn-comecar" class="btn">COMEÇAR</a>
+  </div>
 
   <img src="./style/imagens/logo_cruzeiro3.PNG" alt="Logo da sua empresa" class="logo-canto">
 
-</body>
-</html>
+<script>
+    // 1. Pega os elementos
+    const botaoComecar = document.getElementById('btn-comecar');
+    const menuContainer = document.getElementById('menu-container');
+
+    const totalFases = 5;
+
+    // 2. Ouve o clique no "COMEÇAR"
+    botaoComecar.addEventListener('click', function(event) {
+      
+      event.preventDefault(); 
+
+      document.querySelector('.logo').classList.add('logo-subiu');
+      
+      // 3. Limpa o container (apaga o botão "COMEÇAR")
+      menuContainer.innerHTML = '';
+      
+      // --- 👇 ADIÇÃO 1: CRIA O TÍTULO "SELECIONE A FASE" 👇 ---
+      const tituloFases = document.createElement('h2');
+      tituloFases.textContent = 'Selecione uma Fase';
+      tituloFases.className = 'fases-titulo'; // Classe para estilizar
+      menuContainer.appendChild(tituloFases);
+      // --- FIM DA ADIÇÃO 1 ---
+
+      // 4. CRIA UM NOVO DIV PARA SER O GRID DAS FASES
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'fases-grid'; 
+
+      // 5. Pega o progresso salvo
+      let nivelMaximoSalvo = parseInt(localStorage.getItem('nivelMaximoSomaAI')) || 0;
+
+      // 6. Cria os botões de fase e joga DENTRO do gridContainer
+      for (let i = 0; i < totalFases; i++) {
+        let numFase = i + 1;
+        
+        const botaoFase = document.createElement('a');
+        botaoFase.id = `fase-${i}`;
+        botaoFase.className = 'fase-botao'; 
+        botaoFase.textContent = numFase; 
+        
+        // 7. --- ADIÇÃO 2: VERIFICA SE A FASE ESTÁ BLOQUEADA ---
+        if (i <= nivelMaximoSalvo) {
+          // DESBLOQUEADO
+          botaoFase.classList.add('desbloqueado');
+          botaoFase.href = `jogo.html?fase=${i}`;
+        } else {
+          // BLOQUEADO
+          botaoFase.classList.add('bloqueado');
+          botaoFase.href = '#';
+          botaoFase.onclick = (event) => event.preventDefault(); // Impede o clique
+        }
+        
+        gridContainer.appendChild(botaoFase); 
+      }
+
+      // 8. Adiciona a GRADE DE FASES na tela
+      menuContainer.appendChild(gridContainer);
+
+      // 9. CRIA UM NOVO DIV PARA O BOTÃO "VOLTAR"
+      const voltarContainer = document.createElement('div');
+      voltarContainer.className = 'voltar-container'; 
+
+      // 10. Cria o botão "VOLTAR"
+      const botaoVoltar = document.createElement('a');
+      botaoVoltar.href = 'index.html'; 
+      botaoVoltar.className = 'btn'; // Usa o estilo de botão verde
+      botaoVoltar.textContent = 'VOLTAR';
+      
+      // 11. Adiciona o botão "VOLTAR" ao seu container
+      voltarContainer.appendChild(botaoVoltar);
+
+      // 12. Adiciona o container do botão "VOLTAR" na tela
+      menuContainer.appendChild(voltarContainer);
+    });
+  </script>

@@ -34,7 +34,9 @@ function tocarProximaMusica() {
   } while (proximaMusica === musicaAtual && playlist.length > 1);
   
   musicaAtual = proximaMusica;
-  musica.src = `style/bgm/${musicaAtual}`; // Ex: "style/bgm/musica1.mp3"
+  
+  // 👇 ÚNICA MUDANÇA (CAMINHO CORRIGIDO) 👇
+  musica.src = `assets/bgm/${musicaAtual}`; // Ex: "assets/bgm/musica1.mp3"
   
   musica.play().catch(err => console.error("Erro ao tocar próxima música:", err));
 }
@@ -63,7 +65,7 @@ musica.addEventListener("ended", () => {
 // Alterna som ligado/desligado no botão (Sem alterações)
 botao.addEventListener("click", () => {
   if (musica.paused) {
-     return;
+      return;
   }
   
   musica.muted = !musica.muted;

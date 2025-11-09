@@ -68,6 +68,8 @@ body {
     max-width: 80%;
     margin-bottom: 200px;
     /* controla o espaçamento entre logo e botão */
+
+    transition: all 0.9s ease-out;
 }
 
 h1 {
@@ -103,4 +105,78 @@ h1 {
        padding: 15px 40px;
        font-size: 1.2rem;
     }
+}
+
+/* =========================
+   ESTILOS DAS FASES (NOVOS)
+   ========================= */
+
+/* Título "Selecione uma Fase" */
+.fases-titulo {
+  font-size: 24px;
+  color: #333; /* Cor escura para ser visível */
+  margin-bottom: 20px;
+  font-family: "Comic Sans MS", cursive, sans-serif; /* Fonte do seu jogo */
+
+  text-align: center;
+
+}
+
+/* Grid para os botões 1-5 */
+.fases-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; 
+  flex-wrap: wrap; 
+  margin: 20px 0;
+}
+
+/* Estilo para os botões de fase (1, 2, 3...) */
+.fase-botao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px; 
+  height: 70px;
+  background-color: #f0f0f0;
+  border: 3px solid #333;
+  border-radius: 12px;
+  font-size: 32px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+/* Estilo para o botão DESBLOQUEADO */
+.fase-botao.desbloqueado:hover {
+  background-color: #E9C46A; /* Cor de destaque */
+  transform: scale(1.1);
+}
+
+/* Estilo para o botão BLOQUEADO */
+.fase-botao.bloqueado {
+  background-color: #aaa;
+  color: #777;
+  border-color: #777;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Container para o botão "VOLTAR" */
+.voltar-container {
+  display: flex; 
+  justify-content: center; 
+  width: 100%; 
+  margin-top: 30px; /* Espaço entre a grade e o botão */
+}
+
+.logo-subiu {
+  /* Move o logo 100 pixels para CIMA */
+  transform: translateY(-100px); 
+  
+  /* Diminui a margem de baixo para o menu de fases caber */
+  margin-bottom: 30px; 
 }
