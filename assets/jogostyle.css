@@ -22,7 +22,8 @@ body {
 .wrapper {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* 'flex-start' para travar no topo */
+  align-items: flex-start;
+  /* 'flex-start' para travar no topo */
   flex: 1 0 auto;
   width: 100%;
 }
@@ -35,14 +36,16 @@ body {
 .container {
   display: flex;
   flex-direction: row;
-  align-items: stretch; /* garante alturas iguais */
   justify-content: center;
+  align-items: center; /* ✅ Alinha os dois pelo meio */
   gap: 40px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
+
+
 
 /* Coluna da esquerda (agora uma classe) */
 .coluna-esquerda {
@@ -68,11 +71,14 @@ body {
 
 /* Container das Vidas (corações) */
 #vidas-container {
-  font-size: 28px;
+  font-size: 40px;
   color: #e53935;
   letter-spacing: 5px;
   text-align: center;
-  margin-bottom: 8px; /* Espaço abaixo dos corações */
+  margin-bottom: 8px;
+  margin-top: 20px;
+  text-shadow: 5 5 5px black;
+  /* Espaço abaixo dos corações */
 }
 
 /* Mensagem de Feedback (Ex: vidas, erro, etc) */
@@ -81,9 +87,10 @@ body {
   color: #000;
   text-align: center;
   min-height: 24px;
-  
+
   /* 👇 A SOLUÇÃO PARA O ESPAÇAMENTO 👇 */
-  margin-bottom: 10px; /* Espaço que empurra a cruzadinha para baixo */
+  margin-bottom: 10px;
+  /* Espaço que empurra a cruzadinha para baixo */
 }
 
 /* Container da Cruzadinha (gerada pelo JS) */
@@ -95,67 +102,67 @@ body {
   padding: 0;
   margin: 0 auto;
   text-align: center;
-  
+
   /* Estilos do CSS original */
   font-family: "Comic Sans MS", cursive, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(1.5);
+  /*transform: scale(1.0);*/
   transform-origin: top;
 }
 
 /* Coluna da direita (respostas) */
 .lado-direito {
-  /* Estilos do HTML */
   display: flex;
   flex-direction: column;
+  justify-content: center; /* Alinha verticalmente com o meio do container alvo */
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  flex: 0 0 200px; /* largura fixa da coluna */
-  border-left: none;
+  height: auto;
+  flex: 0 0 auto;
   padding-left: 20px;
-  
-  /* Estilos do CSS original */
-  background-color: transparent;
-  min-width: 280px; /* (Mantido, mas o 'flex' acima é mais forte) */
-  min-height: 700px;
+  background: transparent;
+  min-width: 280px;
+
+  height: fit-content;
+  align-self: center;
 }
+
 
 /* Container da área de respostas */
 #area-respostas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* distribui uniformemente */
+  justify-content: space-between;
+  /* distribui uniformemente */
   height: 100%;
   width: 100%;
 }
 
 /* Bloco das respostas arrastáveis */
 #respostas-container {
-  /* Estilos do HTML */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly; /* distribui as respostas verticalmente */
-  gap: 20px;
-  height: 100%;
-  width: 100%;
-  
-  /* Estilos do CSS original (da classe .display2) */
-  border: 3px solid black;
-  border-radius: 20px;
-  background: white;
-  box-shadow: none;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 40px;
+    /* height: 350px; */
+    width: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 50px;
+    background: transparent;
+    backdrop-filter: blur(50px) saturate(100%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    box-shadow: 5px 8px 32px rgba(0, 0, 0, 0.2);
+    flex-wrap: wrap;
+    padding: 30px;
+    justify-content: space-evenly;
 }
 
 /* --- Overlay de Game Over --- */
 #gameover-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: none;
   align-items: center;
   justify-content: center;
@@ -170,7 +177,7 @@ body {
   max-width: 320px;
   width: 90%;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 #gameover-msg {
@@ -214,6 +221,7 @@ body {
   gap: 10px;
   font-family: "Comic Sans MS", cursive, sans-serif;
 }
+
 /* ... (todas as outras regras da legenda .legenda-item, .legenda-numero, etc.) ... */
 
 
@@ -222,6 +230,7 @@ body {
   from {
     background-position: 0 0;
   }
+
   to {
     background-position: -2000px 0;
   }
@@ -229,20 +238,23 @@ body {
 
 /* Respostas Arrastáveis */
 .resposta {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border: 2px solid #000;
-  border-radius: 0;
   background-color: transparent !important;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
-  font-weight: bold;
-  font-size: 18px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
+
+.resposta img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 
 .resposta img {
   width: 100%;
@@ -302,55 +314,48 @@ body {
 }
 
 
-/* =========================
-   DESIGN RESPONSIVO
-   ========================= */
-
-/* 1. Padrão (Telas de PC grandes, acima de 1650px) */
-/* (Aqui ela pode ter o zoom máximo de 1.5) */
-/* (Esta regra já deve existir no seu CSS, apenas garanta que 'transform-origin: top' esteja nela) */
-#cruzadinha-container {
-  /* ... (suas regras de display, font, etc.) ... */
-  transform: scale(1.5);
-  transform-origin: top; 
-}
-
-
-/* 2. Telas de Notebook (1649px ou menos) */
-/* (Esta nova regra vai pegar sua tela de 1629px) */
-@media (max-width: 1649px) {
-  #cruzadinha-container {
-    transform: scale(1.2); /* Reduz o zoom */
-  }
-}
-
-
 /* 3. Tablets e notebooks pequenos (1100px ou menos) */
 @media (max-width: 1100px) {
-  
+
   /* Layout vira coluna */
   .container {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    height: auto;
+    /* 👈 alinha cruzadinha e respostas pelo meio */
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
   }
+
+
   
-  /* Cruzadinha diminui mais */
-  #cruzadinha-container {
-    transform: scale(1.1); 
-  }
-  
+
   /* Colunas ocupam 100% */
-  .coluna-esquerda, .lado-direito {
+  .coluna-esquerda,
+  .lado-direito {
     width: 100%;
     max-width: 800px;
     height: auto;
     border-left: none;
   }
-  
+
   .lado-direito {
-    border-top: 2px dashed #ccc;
-    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* centraliza o container das respostas no eixo horizontal */
+    justify-content: center;
+    /* 👈 centraliza verticalmente dentro da linha */
+    height: 100%;
+    flex: 0 0 auto;
+    border-left: none;
+    padding-left: 20px;
+    background-color: transparent;
+    min-width: 280px;
   }
 
   /* Respostas viram linha */
@@ -366,7 +371,8 @@ body {
 /* 4. Telas de Celular (600px ou menos) */
 @media (max-width: 600px) {
   #cruzadinha-container {
-    transform: scale(1.0); /* Sem zoom */
+    transform: scale(1.0);
+    /* Sem zoom */
   }
 }
 
@@ -382,18 +388,22 @@ body {
   justify-content: center;
   background: white;
   border-radius: 20px;
-  padding: 40px 30px; /* Mais padding */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  margin-top: 40px; /* Margem do topo */
+  padding: 40px 30px;
+  /* Mais padding */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-top: 40px;
+  /* Margem do topo */
   font-family: "Comic Sans MS", cursive, sans-serif;
   text-align: center;
   width: 90%;
-  max-width: 600px; /* Largura máxima da caixa */
+  max-width: 600px;
+  /* Largura máxima da caixa */
 }
 
 /* O seu Logo */
 .menu-logo {
-  width: 200px; /* Ajuste o tamanho do seu logo */
+  width: 200px;
+  /* Ajuste o tamanho do seu logo */
   height: auto;
   margin-bottom: 20px;
 }
@@ -401,8 +411,26 @@ body {
 /* Título (ex: "SOMA AI" ou "Selecione a Fase") */
 .menu-titulo {
   font-size: 42px;
-  color: #2A9D8F; /* Cor do seu jogo */
+  color: #2A9D8F;
+  /* Cor do seu jogo */
   margin-bottom: 30px;
+}
+
+.jogo-area {
+  display: flex;
+  gap: 100px;
+  align-items: center;
+  overflow-x: auto;    /* se ficar grande, rola */
+  transform: scale(1.2);
+  margin: 100px;
+  padding: 35px;
+}
+
+.cruzadinha-wrapper {
+  flex: 0 0 auto;          /* NÃO encolhe */
+  width: max-content;      /* largura = conteúdo */
+  min-width: max-content;  /* garante mesmo */
+  overflow: visible;
 }
 
 /* O container para os botões */
@@ -441,8 +469,10 @@ body {
 }
 
 .menu-botao:hover {
-  background-color: #E9C46A; /* Cor do seu jogo */
-  transform: scale(1.05); /* Efeito de zoom */
+  background-color: #E9C46A;
+  /* Cor do seu jogo */
+  transform: scale(1.05);
+  /* Efeito de zoom */
   border-color: #F4A261;
 }
 
@@ -460,16 +490,21 @@ body {
   color: #333;
   cursor: pointer;
 }
+
 .fase-botao.desbloqueado:hover {
-  background-color: #E9C46A; 
+  background-color: #E9C46A;
   transform: scale(1.1);
 }
 
 /* Estilo do Botão BLOQUEADO */
 .fase-botao.bloqueado {
-  background-color: #aaa; /* Fundo cinza */
-  color: #777; /* Texto cinza escuro */
+  background-color: #aaa;
+  /* Fundo cinza */
+  color: #777;
+  /* Texto cinza escuro */
   border-color: #777;
-  cursor: not-allowed; /* Ícone de "não permitido" */
-  opacity: 0.6; /* Meio transparente */
+  cursor: not-allowed;
+  /* Ícone de "não permitido" */
+  opacity: 0.6;
+  /* Meio transparente */
 }

@@ -16,49 +16,45 @@
 
       <div class="coluna-esquerda">
 
-        <div class="lado-esquerdo" id="lado-esquerdo">
+        <!-- ❤️ Vidas agora ficam fora do lado esquerdo -->
+        <div id="vidas-container">
+          ❤️❤️❤️❤️❤️
+        </div>
 
-          <div id="vidas-container">
-            ❤️❤️❤️❤️❤️
+        <!-- 🔹 NOVA DIV-MÃE -->
+        <div class="jogo-area">
+          <div class="cruzadinha-wrapper">
+            <div id="cruzadinha-container"></div>
           </div>
-
-          <div id="feedback-cruzadinha">
-            </div>
-
-          <div id="cruzadinha-container" class="display">
-            </div>
-        </div>
-      </div>
-      <div class="lado-direito">
-
-        <div id="area-respostas">
-
           <div id="respostas-container" class="display2" ondrop="retornarResposta(event)" ondragover="allowDrop(event)">
-            </div>
+          </div>
         </div>
+
+
       </div>
-      </div> </div> <div id="gameover-overlay">
-    <div class="gameover-caixa">
-
-      <div id="gameover-msg">
-        As vidas acabaram! Você vai precisar recomeçar.
-      </div>
-
-      <button id="btn-gameover-ok">
-        OK
-      </button>
-
     </div>
-  </div>
 
-  <audio id="musicaFundo"></audio>
+    <!-- Modal de Game Over -->
+    <div id="gameover-overlay">
+      <div class="gameover-caixa">
+        <div id="gameover-msg">
+          As vidas acabaram! Você vai precisar recomeçar.
+        </div>
+        <button id="btn-gameover-ok">OK</button>
+      </div>
+    </div>
 
-  <button id="botaoMutar">
-    <span id="iconeVolume"></span>
-  </button>
+    <!-- Música e Botão de Mute -->
+    <audio id="musicaFundo"></audio>
 
-  <script src="./js/cruzadinha.js"></script>
-  <script src="./js/som.js"></script>
+    <button id="botaoMutar">
+      <span id="iconeVolume"></span>
+    </button>
+
+    <!-- Scripts -->
+    <script src="./js/cruzadinha.js"></script>
+    <script src="./js/som.js"></script>
+
 </body>
 
 </html>
