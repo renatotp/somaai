@@ -6,6 +6,31 @@
   <title>Soma Ai - Entrada</title>
 
   <link rel="stylesheet" href="./assets/indexstyle.css">
+
+  <style>
+    /* Botão CRÉDITOS no rodapé */
+    #btn-creditos {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      font-size: 16px;
+      padding: 10px 25px;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      text-decoration: none; /* remove sublinhado */
+      backdrop-filter: blur(4px);
+    }
+
+    #btn-creditos:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+      color: #000;
+      transform: translateX(-50%) scale(1.05);
+    }
+  </style>
 </head>
 
 <body>
@@ -16,54 +41,44 @@
     <a href="#" id="btn-comecar" class="btn">COMEÇAR</a>
   </div>
 
-  <img src="./assets/imagens/logo_cruzeiro3.PNG" alt="Logo Cruzeio do sul" class="logo-canto">
+  <!-- 👇 Botão de Créditos fixo no rodapé 👇 -->
+  <a href="creditos.html" id="btn-creditos">CRÉDITOS</a>
+
+  <img src="./assets/imagens/logo_cruzeiro3.PNG" alt="Logo Cruzeiro do sul" class="logo-canto">
 
 <script>
-  // 1. Pega os elementos
   const botaoComecar = document.getElementById('btn-comecar');
   const menuContainer = document.getElementById('menu-container');
-  const logo = document.querySelector('.logo'); // Pegamos o logo aqui
+  const logo = document.querySelector('.logo');
 
-  // 2. Define o total de fases
-  const totalFases = 5; // 0..4
-  const faseSecretaIndex = 5; // sua fase EXTRA
+  const totalFases = 5; 
+  const faseSecretaIndex = 5; // fase EXTRA
 
-  // 3. Transformamos o código do clique em uma função reutilizável
   function mostrarSelecaoDeFases() {
-    // Anima o logo
     logo.classList.add('logo-subiu');
-
-    // limpa o container
     menuContainer.innerHTML = '';
 
-    // título
     const tituloFases = document.createElement('h2');
     tituloFases.textContent = 'Selecione uma Fase';
     tituloFases.className = 'fases-titulo';
     menuContainer.appendChild(tituloFases);
 
-    // grid
     const gridContainer = document.createElement('div');
     gridContainer.className = 'fases-grid';
 
-    // pega progresso salvo
     let nivelMaximoSalvo = parseInt(localStorage.getItem('nivelMaximoSomaAI')) || 0;
 
-    // cria as 5 fases normais
     for (let i = 0; i < totalFases; i++) {
       let numFase = i + 1;
-      
       const botaoFase = document.createElement('a');
       botaoFase.id = `fase-${i}`;
       botaoFase.className = 'fase-botao';
       botaoFase.textContent = numFase;
 
       if (i <= nivelMaximoSalvo) {
-        // desbloqueada
         botaoFase.classList.add('desbloqueado');
         botaoFase.href = `jogo.html?fase=${i}`;
       } else {
-        // bloqueada
         botaoFase.classList.add('bloqueado');
         botaoFase.href = '#';
         botaoFase.onclick = (ev) => ev.preventDefault();
@@ -72,12 +87,11 @@
       gridContainer.appendChild(botaoFase);
     }
 
-    // 👇👇 AQUI ENTRA A FASE SECRETA 👇👇
     if (nivelMaximoSalvo >= faseSecretaIndex) {
       const botaoSecreto = document.createElement('a');
       botaoSecreto.id = 'fase-secreta';
       botaoSecreto.className = 'fase-botao desbloqueado';
-      botaoSecreto.textContent = '★'; // pode trocar por "6" ou "?"
+      botaoSecreto.textContent = '★';
       botaoSecreto.title = 'Fase Secreta!';
       botaoSecreto.href = `jogo.html?fase=${faseSecretaIndex}`;
       gridContainer.appendChild(botaoSecreto);
@@ -85,7 +99,6 @@
 
     menuContainer.appendChild(gridContainer);
 
-    // botão voltar
     const voltarContainer = document.createElement('div');
     voltarContainer.className = 'voltar-container';
 
@@ -98,21 +111,18 @@
     menuContainer.appendChild(voltarContainer);
   }
 
-  // --- LÓGICA DE CARREGAMENTO (AQUI ESTÁ A MUDANÇA) ---
-
-  // 1. Pega os parâmetros da URL
   const urlParams = new URLSearchParams(window.location.search);
   const view = urlParams.get('view');
 
-  // 2. Verifica se a URL contém "?view=fases"
   if (view === 'fases') {
-    // Se SIM: Mostra a seleção de fases imediatamente
     mostrarSelecaoDeFases();
   } else {
-    // Se NÃO: Adiciona o clique ao botão "COMEÇAR" (como era antes)
     botaoComecar.addEventListener('click', function(event) {
       event.preventDefault();
-      mostrarSelecaoDeFases(); // Chama a nova função
+      mostrarSelecaoDeFases();
     });
   }
 </script>
+
+</body>
+</html>
