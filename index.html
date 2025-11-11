@@ -16,21 +16,22 @@
     <a href="#" id="btn-comecar" class="btn">COMEÇAR</a>
   </div>
 
-  <img src="./style/imagens/logo_cruzeiro3.PNG" alt="Logo da sua empresa" class="logo-canto">
+  <img src="./assets/imagens/logo_cruzeiro3.PNG" alt="Logo Cruzeio do sul" class="logo-canto">
 
 <script>
   // 1. Pega os elementos
   const botaoComecar = document.getElementById('btn-comecar');
   const menuContainer = document.getElementById('menu-container');
+  const logo = document.querySelector('.logo'); // Pegamos o logo aqui
 
-  // total de fases "normais" (as que aparecem sempre)
+  // 2. Define o total de fases
   const totalFases = 5; // 0..4
   const faseSecretaIndex = 5; // sua fase EXTRA
 
-  botaoComecar.addEventListener('click', function(event) {
-    event.preventDefault();
-
-    document.querySelector('.logo').classList.add('logo-subiu');
+  // 3. Transformamos o código do clique em uma função reutilizável
+  function mostrarSelecaoDeFases() {
+    // Anima o logo
+    logo.classList.add('logo-subiu');
 
     // limpa o container
     menuContainer.innerHTML = '';
@@ -72,8 +73,6 @@
     }
 
     // 👇👇 AQUI ENTRA A FASE SECRETA 👇👇
-    // se o jogador já chegou no nível 5 (ou seja, terminou a fase de índice 4),
-    // mostramos o botão da fase secreta
     if (nivelMaximoSalvo >= faseSecretaIndex) {
       const botaoSecreto = document.createElement('a');
       botaoSecreto.id = 'fase-secreta';
@@ -97,5 +96,23 @@
 
     voltarContainer.appendChild(botaoVoltar);
     menuContainer.appendChild(voltarContainer);
-  });
+  }
+
+  // --- LÓGICA DE CARREGAMENTO (AQUI ESTÁ A MUDANÇA) ---
+
+  // 1. Pega os parâmetros da URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const view = urlParams.get('view');
+
+  // 2. Verifica se a URL contém "?view=fases"
+  if (view === 'fases') {
+    // Se SIM: Mostra a seleção de fases imediatamente
+    mostrarSelecaoDeFases();
+  } else {
+    // Se NÃO: Adiciona o clique ao botão "COMEÇAR" (como era antes)
+    botaoComecar.addEventListener('click', function(event) {
+      event.preventDefault();
+      mostrarSelecaoDeFases(); // Chama a nova função
+    });
+  }
 </script>

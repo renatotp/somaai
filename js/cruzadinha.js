@@ -1,3 +1,25 @@
+// --- CARREGAMENTO DO FUNDO ALEATÓRIO ---
+
+// 1. Liste os nomes dos seus arquivos de fundo aqui
+const listaDeFundos = [
+  'verde.jpg',
+  'rosinha.png',
+  'laranja.jpg',
+  'especial.png' // Adicione quantas imagens você tiver na pasta 'fundos'
+];
+
+// 2. Esta função é executada assim que o script carrega
+(function() {
+  // 3. Escolhe um nome de arquivo aleatório da lista
+  const fundoEscolhido = listaDeFundos[Math.floor(Math.random() * listaDeFundos.length)];
+
+  // 4. Aplica o fundo e a animação no body
+  document.body.style.backgroundImage = `url('./assets/imagens/fundos/${fundoEscolhido}')`;
+  document.body.style.animation = 'rolar-fundo 80s linear infinite';
+})();
+
+// --- FIM DO SCRIPT DE FUNDO ---
+
 // --- INICIALIZAÇÃO ---
 const container = document.getElementById('cruzadinha-container');
 const respostasContainer = document.getElementById('respostas-container');
@@ -33,7 +55,7 @@ function tocarSom(arquivo) {
 // FASE 0 é a que já estava no seu arquivo (você chamou de fase 1, mas no código ela é índice 0).
 // Abaixo eu adicionei as fases 2, 3, 4, 5 e a EXTRA (como fase 6 = índice 5).
 let fases = [
-    // --- FASE 0 (a que estava no arquivo) ---
+    // --- FASE 1 (a que estava no arquivo) ---
     {
         cruzada: [
             [" ", " ", " ", " ", "3", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -53,37 +75,37 @@ let fases = [
         respostas: [1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5]
     },
 
-    // --- FASE 1 (a próxima que você vai editar depois) ---
+    // --- FASE 2 (a próxima que você vai editar depois) ---
     // você pode manter essa vazia ou reaproveitar a que já estava começada
     {
         cruzada: [
-            [" ", 0, "+", "3", "=", 0, " ", " ", " ", " ", " ", " ", " "],
+            [" ", "3", "+", "3", "=", 0, " ", " ", " ", " ", " ", " ", " "],
             [" ", "-", " ", " ", " ", "-", " ", " ", " ", " ", " ", " ", " "],
-            [" ", "2", " ", "2", " ", "2", " ", "2", " ", " ", " ", " ", " "],
+            [" ", "2", " ", "2", " ", "2", " ", 0, " ", " ", " ", " ", " "],
             [" ", "=", " ", "+", " ", "=", " ", "+", " ", " ", " ", " ", " "],
             [" ", 0, "+", "3", "=", 0, "+", "1", "=", 0, " ", " ", " "],
             [" ", "+", " ", "=", " ", " ", " ", "=", " ", " ", " ", " ", " "],
             [" ", "3", " ", 0, " ", 0, "-", "3", "=", "2", " ", " ", " "],
             [" ", "=", " ", " ", " ", " ", " ", " ", " ", "+", " ", " ", " "],
-            [" ", 0, " ", " ", " ", 1, " ", "2", "+", 0, "=", 0, " "],
+            [" ", 0, " ", " ", " ", "2", " ", "2", "+", 0, "=", 0, " "],
             [" ", " ", " ", " ", " ", "+", " ", " ", " ", "=", " ", " ", " "],
             [" ", " ", " ", " ", " ", "4", "-", 0, "=", "3", " ", " ", " "],
             [" ", " ", " ", " ", " ", "=", " ", " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", 0, " ", " ", " ", " ", " ", " ", " "]
         ],
-        respostas: [3, 1, 4, 5, 6, 4, 5, 2, 6, 1, 1, 3, 5]
+        respostas: [6, 1, 4, 5, 5, 5, 4, 2, 1, 3, 1, 6]
     },
 
-    // --- FASE 2 ---
+    // --- FASE 3 ---
     {
         cruzada: [
             [" ", " ", " ", " ", "1", " ", " ", " ", " ", " ", "2", " ", " "],
             [" ", " ", " ", " ", "+", " ", " ", " ", " ", " ", "+", " ", " "],
             [0, "-", "3", "=", 0, " ", 0, "+", "2", "=", 0, " ", " "],
             [" ", " ", " ", " ", "=", " ", "-", " ", " ", " ", "=", " ", " "],
-            [" ", " ", " ", " ", "5", "-", 0, "=", 0, " ", 0, " ", " "],
+            [" ", " ", " ", " ", "5", "-", "1", "=", 0, " ", 0, " ", " "],
             [" ", " ", " ", " ", " ", " ", "=", " ", "-", " ", " ", " ", " "],
-            [" ", " ", " ", " ", "1", "+", "2", "=", "3", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "1", "+",   0, "=", "3", " ", " ", " ", " "],
             [" ", " ", " ", " ", "+", " ", " ", " ", "=", " ", " ", " ", " "],
             [" ", " ", 0, "-", 0, "=", "1", " ", 0, "+", "3", "=", 0],
             [" ", " ", "-", " ", "=", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -92,10 +114,10 @@ let fases = [
             [" ", " ", 0, " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
         ],
 
-        respostas: [7, 4, 3, 5, 1, 4, 7, 7, 6, 1, 4, 6, 3]
+        respostas: [7, 4 ,3 ,5 ,4 ,7 ,2 ,7 ,6 ,1 ,4 ,6 ,3]
     },
 
-    // --- FASE 3 ---
+    // --- FASE 4 ---
     {
         cruzada: [
             [" ", " ", " ", " ", " ", " ", " ", " ", "3", "+", "5", "=", 0],
@@ -104,7 +126,7 @@ let fases = [
             [" ", " ", " ", " ", "+", " ", " ", " ", "=", " ", " ", " ", " "],
             [" ", " ", 0, " ", 0, "+", "6", "=", 0, "-", 0, "=", "1"],
             [" ", " ", "-", " ", "=", " ", "-", " ", " ", " ", " ", " ", " "],
-            [0, "-", 0, "=", 0, " ", "1", " ", " ", " ", " ", " ", " "],
+            ["8", "-", 0, "=", "6", " ", "1", " ", " ", " ", " ", " ", " "],
             [" ", " ", "=", " ", " ", " ", "=", " ", " ", " ", " ", " ", " "],
             [" ", " ", "3", " ", " ", " ", 0, "-", "3", "=", 0, " ", " "],
             [" ", " ", " ", " ", " ", " ", " ", " ", "+", " ", " ", " ", " "],
@@ -112,9 +134,9 @@ let fases = [
             [" ", " ", " ", " ", " ", " ", " ", " ", "=", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", " ", " ", " ", "8", " ", " ", " ", " "]
         ],
-        respostas: [8, 5, 4, 5, 1, 7, 8, 8, 2, 6, 5, 2, 5]
+        respostas: [5, 4, 5, 1, 7, 8, 6, 2, 5, 2, 5]
     },
-    // --- FASE 4 ---
+    // --- FASE 5 ---
     {
         cruzada: [
             [" ", " ", "7", "-", "2", "=", 0, " ", " ", " ", " ", " ", " "],
@@ -134,21 +156,21 @@ let fases = [
         respostas: [5, 2, 7, 9, 8, 2, 7, 6, 9, 6, 2, 1]
     },
 
-    // --- FASE 5 (EXTRA / 6ª fase) ---
+    // --- FASE 6 (EXTRA / 6ª fase) ---
     {
         cruzada: [
             [" ", " ", " ", " ", " ", " ", "5", " ", " ", "3", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " ", "101", " ", " ", "101", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "B", " ", " ", "B", " ", " ", " "],
             [" ", " ", " ", " ", " ", " ", 0, " ", " ", 0, " ", " ", " "],
             [" ", " ", " ", "2", " ", " ", 0, " ", " ", 0, " ", " ", " "],
-            [" ", " ", " ", "101", "9", "102", 0, 0, 0, 0, " ", " ", " "],
+            [" ", " ", " ", "B", "9", "F", 0, 0, 0, 0, " ", " ", " "],
             [" ", " ", " ", 0, " ", " ", 0, " ", " ", 0, " ", " ", " "],
-            [" ", "8", "102", 0, 0, 0, 0, " ", " ", " ", " ", " ", " "],
+            [" ", "8", "F", 0, 0, 0, 0, " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", 0, " ", " ", " ", " ", "7", " ", " ", " ", " "],
-            [" ", "6", "102", 0, 0, 0, 0, " ", "101", " ", " ", " ", " "],
+            [" ", "6", "F", 0, 0, 0, 0, " ", "B", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", " ", "1", " ", 0, " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " ", "101", " ", 0, " ", " ", " ", " "],
-            [" ", " ", " ", "4", "102", 0, 0, 0, 0, 0, 0, " ", " "],
+            [" ", " ", " ", " ", " ", " ", "B", " ", 0, " ", " ", " ", " "],
+            [" ", " ", " ", "4", "F", 0, 0, 0, 0, 0, 0, " ", " "],
             [" ", " ", " ", " ", " ", " ", 0, " ", 0, " ", " ", " ", " "]
         ],
         respostas: [
@@ -161,30 +183,54 @@ let fases = [
 // gabarito esperado
 // por enquanto só a fase 0 tem gabarito, as demais ficam vazias pra você preencher depois
 const gabaritos = {
+    // Fase 1
     0: {
         "2-4": 2, "2-8": 4, "4-2": 4, "4-6": 3, "4-8": 1,
         "6-0": 2, "6-10": 3, "6-12": 2, "10-4": 5, "10-6": 2, "12-6": 3
     },
+    // Fase 2
     1: {
-        "0-1": 3, "0-5": 1, "4-1": 4, "4-5": 5, "4-9": 6,
-        "6-3": 4, "6-5": 5, "8-1": 2, "8-9": 6, "8-11": 1,
-        "10-7": 1, "12-5": 3
+   "0-5": 6,
+        "2-7": 2,
+        "4-1": 1,
+        "4-5": 4,
+        "4-9": 5,
+        "6-3": 5,
+        "6-5": 5,
+        "8-1": 4,
+        "8-9": 1,
+        "8-11": 3,
+        "10-7": 1,
+        "12-5": 6
     },
+    // Fase 3
     2: {
-        "2-0": 7, "2-4": 4, "2-6": 3, "2-10": 5,
-        "4-6": 1, "4-8": 4, "4-10": 7, "8-2": 7,
-        "8-4": 6, "8-8": 1, "8-12": 4, "10-8": 6, "12-2": 3
+    "2-0": 7,
+    "2-4": 4,
+    "2-6": 3,
+    "2-10": 5,
+    "4-8": 4,
+    "4-10": 7,
+    "6-6": 2,
+    "8-2": 7,
+    "8-4": 6,
+    "8-8": 1,
+    "8-12": 4,
+    "10-8": 6,
+    "12-2": 3
     },
+    // Fase 4
     3: {
         "0-12": 8, "2-4": 5, "2-8": 4, "4-2": 5, "4-4": 1,
-        "4-8": 7, "4-10": 8, "6-0": 8, "6-2": 2,
-        "6-4": 6, "8-6": 5, "8-10": 2, "10-8": 5
+        "4-8": 7, "4-10": 6, "6-2": 2, "8-6": 5, "8-10": 2, "10-8": 5
     },
+    // Fase 5
     4: {
         "0-6": 5, "2-4": 2, "2-8": 7, "4-6": 9, "6-2": 8,
         "6-8": 2, "6-10": 7, "8-6": 6, "8-8": 9,
         "10-2": 6, "10-4": 2, "10-12": 1
     },
+    // Fase 6
     5: {
         "2-6": "C", "2-9": "T", "3-6": "I", "3-9": "R",
         "4-6": "N", "4-7": "O", "4-8": "V", "4-9": "E",
@@ -255,7 +301,7 @@ function reiniciarFase() {
 // --- MONTA A FASE VISUALMENTE ---
 function carregarFase(n) {
     // Verifica se a fase 'n' existe nos dados
-    if (!fases[n] || !gabaritos[n] === undefined) {
+    if (!fases[n] || !gabaritos[n]) {
         console.error(`Fase ${n} não encontrada! Carregando fase 0.`);
         n = 0; // Garante que o jogo não quebre
     }
@@ -303,6 +349,9 @@ function carregarFase(n) {
                 const ehNumeroSimples = /^[0-9]$/.test(valor);
                 const ehSimbolo = ['+', '-', '='].includes(valor);
 
+                const ehImagemEspecial = ['B', 'F'].includes(valor);
+
+
                 // renderiza sempre como imagem (número OU símbolo)
                 // OBS: para a fase EXTRA, que tem "C", "T", "O", ">" e "\\/", isso aqui vai cair no else e mostrar texto mesmo.
                 const blocoImagem = `
@@ -320,7 +369,7 @@ function carregarFase(n) {
                     </div>
                 `;
 
-                const conteudoCelula = (ehNumeroSimples || ehSimbolo) ? blocoImagem : valor;
+                const conteudoCelula = (ehNumeroSimples || ehSimbolo || ehImagemEspecial) ? blocoImagem : valor;
 
                 html += `
                     <td style="
@@ -460,6 +509,9 @@ function drop(ev) {
                 }
 
                 if (vidas <= 0) {
+
+                    tocarSom('./assets/bgm/falha.mp3');
+                    
                     gameOver();
                     abrirGameOverModal();
                 }
@@ -508,23 +560,44 @@ function desbloquearProximaFase() {
 
 /** Verifica se o jogador completou todas as respostas da fase */
 function verificarVitoria() {
-    const gabaritoFase = gabaritos[faseAtual];
-    if (!gabaritoFase) return;
+  const gabaritoFase = gabaritos[faseAtual];
+  if (!gabaritoFase) return;
 
-    const totalRespostas = Object.keys(gabaritoFase).length;
-    const respostasCorretas = document.querySelectorAll('.dropzone[data-correta="true"]').length;
+  const totalRespostas = Object.keys(gabaritoFase).length;
+  const respostasCorretas = document.querySelectorAll('.dropzone[data-correta="true"]').length;
 
-    if (respostasCorretas === totalRespostas) {
-        // desbloqueia a próxima
-        desbloquearProximaFase();
-        tocarSom('./assets/bgm/acerto.mp3');
+  // Verifica se o número de acertos é igual ao total de respostas
+  if (respostasCorretas === totalRespostas) {
+    
+    // --- O JOGADOR VENCEU! ---
+    
+    // 1. Salva o progresso
+    desbloquearProximaFase();
+    tocarSom('./assets/bgm/vitoria.mp3');
 
-        setTimeout(() => {
-            alert('Fase Concluída! Você desbloqueou a próxima fase!');
-            // VOLTA PARA A TELA INICIAL QUE JÁ TEM A SELEÇÃO DE FASES
-            window.location.href = 'index.html';
-        }, 500);
+    // 2. Pega os elementos do novo modal
+    const overlay = document.getElementById('vitoria-overlay');
+    const btnProxima = document.getElementById('btn-vitoria-proxima');
+    const msgVitoria = document.getElementById('vitoria-msg');
+    
+    // 3. Calcula qual é a próxima fase
+    const proximaFaseId = faseAtual + 1;
+    
+    // 4. Configura o link do botão "Próxima Fase"
+    if (fases[proximaFaseId]) {
+      // Se a próxima fase existe, configura o link
+      btnProxima.href = `jogo.html?fase=${proximaFaseId}`;
+      btnProxima.style.display = 'block'; // Garante que ele apareça
+      msgVitoria.textContent = 'Você desbloqueou a próxima fase!';
+    } else {
+      // É a última fase! Esconde o botão "Próxima Fase"
+      btnProxima.style.display = 'none';
+      msgVitoria.textContent = 'Parabéns, você completou todas as fases!';
     }
+
+    // 5. Mostra o modal de vitória
+    overlay.style.display = 'flex';
+  }
 }
 
 

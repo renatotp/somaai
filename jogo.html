@@ -34,6 +34,22 @@
       </div>
     </div>
 
+    <div id="vitoria-overlay">
+      <div class="vitoria-caixa">
+
+        <h2 id="vitoria-titulo">Fase Concluída!</h2>
+
+        <p id="vitoria-msg">Você desbloqueou a próxima fase!</p>
+
+        <div class="vitoria-botoes">
+          <a href="#" class="vitoria-btn" id="btn-vitoria-proxima">Próxima Fase</a>
+
+          <a href="index.html?view=fases" class="vitoria-btn" id="btn-vitoria-menu">Menu de Fases</a>
+        </div>
+
+      </div>
+    </div>
+
     <!-- Modal de Game Over -->
     <div id="gameover-overlay">
       <div class="gameover-caixa">
@@ -47,9 +63,19 @@
     <!-- Música e Botão de Mute -->
     <audio id="musicaFundo"></audio>
 
-    <button id="botaoMutar">
-      <span id="iconeVolume"></span>
-    </button>
+    <div class="hud-botoes-canto">
+
+      <a href="index.html?view=fases" id="botaoMenu" title="Voltar ao Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z" />
+        </svg>
+      </a>
+
+      <button id="botaoMutar" title="Mutar Som">
+        <span id="iconeVolume"></span>
+      </button>
+
+    </div>
 
     <!-- Scripts -->
     <script src="./js/cruzadinha.js"></script>

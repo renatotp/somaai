@@ -5,10 +5,13 @@
 }
 
 body {
-  background-image: url('./imagens/verde.jpg');
+  /* A IMAGEM E A ANIMAÇÃO SERÃO DEFINIDAS PELO JS */
+  
+  /* Mantém as propriedades de como a imagem deve se comportar */
   background-repeat: repeat-x;
-  background-size: auto 100%;
-  animation: rolar-fundo 80s linear infinite;
+  background-size: auto 100%; 
+  
+  /* ... (o resto dos seus estilos display:flex, min-height, etc. continuam) ... */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -507,4 +510,124 @@ body {
   /* Ícone de "não permitido" */
   opacity: 0.6;
   /* Meio transparente */
+}
+
+/* =========================
+   ESTILOS DA TELA DE VITÓRIA
+   ========================= */
+
+#vitoria-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  
+  /* Começa escondido */
+  display: none; 
+  
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.vitoria-caixa {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 28px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+#vitoria-titulo {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2A9D8F; /* Cor verde do tema */
+  margin-bottom: 10px;
+}
+
+#vitoria-msg {
+  font-size: 18px;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 25px;
+}
+
+/* Container para os botões */
+.vitoria-botoes {
+  display: flex;
+  flex-direction: column; /* Botões empilhados */
+  gap: 10px;
+}
+
+/* Estilo dos botões */
+.vitoria-btn {
+  background: #1976d2; /* Azul (botão principal) */
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.vitoria-btn:hover {
+  transform: scale(1.03);
+}
+
+/* Estilo do botão "Menu" (secundário) */
+.vitoria-btn#btn-vitoria-menu {
+  background-color: #888; /* Cinza */
+}
+
+/* =========================
+   BOTÕES DO JOGO (HUD)
+   ========================= */
+
+/* 1. O novo container que segura os botões */
+.hud-botoes-canto {
+  position: fixed; /* Fica fixo na tela */
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: row-reverse; /* Coloca o Mute na extrema direita */
+  gap: 10px; /* Espaço entre os botões */
+  z-index: 1000;
+}
+
+/* 2. Modifica seu botão de Mutar original */
+#botaoMutar {
+  position: static; /* Remove o posicionamento fixo antigo */
+  /* Todos os seus outros estilos (cor, tamanho, etc.) 
+     continuam funcionando perfeitamente */
+}
+
+/* 3. Estilo para o NOVO botão de Menu (para ser idêntico) */
+#botaoMenu {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+#botaoMenu:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+#botaoMenu svg {
+  width: 24px;
+  height: 24px;
 }
