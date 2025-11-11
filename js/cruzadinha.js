@@ -30,9 +30,10 @@ function tocarSom(arquivo) {
 }
 
 // --- DADOS DO JOGO ---
-// 👇 ADIÇÃO 1: ADICIONE OS DADOS DAS SUAS 5 FASES AQUI 👇
+// FASE 0 é a que já estava no seu arquivo (você chamou de fase 1, mas no código ela é índice 0).
+// Abaixo eu adicionei as fases 2, 3, 4, 5 e a EXTRA (como fase 6 = índice 5).
 let fases = [
-    // --- FASE 0 (A sua fase atual) ---
+    // --- FASE 0 (a que estava no arquivo) ---
     {
         cruzada: [
             [" ", " ", " ", " ", "3", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -52,51 +53,150 @@ let fases = [
         respostas: [1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5]
     },
 
-    // --- FASE 1 (NOVA) ---
+    // --- FASE 1 (a próxima que você vai editar depois) ---
+    // você pode manter essa vazia ou reaproveitar a que já estava começada
     {
-        cruzada: [ /* Crie a matriz da fase 2 aqui */ ],
-        respostas: [ /* Defina as respostas da fase 2 */ ]
+        cruzada: [
+            [" ", 0, "+", "3", "=", 0, " ", " ", " ", " ", " ", " ", " "],
+            [" ", "-", " ", " ", " ", "-", " ", " ", " ", " ", " ", " ", " "],
+            [" ", "2", " ", "2", " ", "2", " ", "2", " ", " ", " ", " ", " "],
+            [" ", "=", " ", "+", " ", "=", " ", "+", " ", " ", " ", " ", " "],
+            [" ", 0, "+", "3", "=", 0, "+", "1", "=", 0, " ", " ", " "],
+            [" ", "+", " ", "=", " ", " ", " ", "=", " ", " ", " ", " ", " "],
+            [" ", "3", " ", 0, " ", 0, "-", "3", "=", "2", " ", " ", " "],
+            [" ", "=", " ", " ", " ", " ", " ", " ", " ", "+", " ", " ", " "],
+            [" ", 0, " ", " ", " ", 1, " ", "2", "+", 0, "=", 0, " "],
+            [" ", " ", " ", " ", " ", "+", " ", " ", " ", "=", " ", " ", " "],
+            [" ", " ", " ", " ", " ", "4", "-", 0, "=", "3", " ", " ", " "],
+            [" ", " ", " ", " ", " ", "=", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", 0, " ", " ", " ", " ", " ", " ", " "]
+        ],
+        respostas: [3, 1, 4, 5, 6, 4, 5, 2, 6, 1, 1, 3, 5]
     },
-    
-    // --- FASE 2 (NOVA) ---
+
+    // --- FASE 2 ---
     {
-        cruzada: [ /* Crie a matriz da fase 3 aqui */ ],
-        respostas: [ /* Defina as respostas da fase 3 */ ]
+        cruzada: [
+            [" ", " ", " ", " ", "1", " ", " ", " ", " ", " ", "2", " ", " "],
+            [" ", " ", " ", " ", "+", " ", " ", " ", " ", " ", "+", " ", " "],
+            [0, "-", "3", "=", 0, " ", 0, "+", "2", "=", 0, " ", " "],
+            [" ", " ", " ", " ", "=", " ", "-", " ", " ", " ", "=", " ", " "],
+            [" ", " ", " ", " ", "5", "-", 0, "=", 0, " ", 0, " ", " "],
+            [" ", " ", " ", " ", " ", " ", "=", " ", "-", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "1", "+", "2", "=", "3", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "+", " ", " ", " ", "=", " ", " ", " ", " "],
+            [" ", " ", 0, "-", 0, "=", "1", " ", 0, "+", "3", "=", 0],
+            [" ", " ", "-", " ", "=", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", "4", " ", "7", "-", "1", "=", 0, " ", " ", " ", " "],
+            [" ", " ", "=", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", 0, " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
+        ],
+
+        respostas: [7, 4, 3, 5, 1, 4, 7, 7, 6, 1, 4, 6, 3]
     },
-    
-    // --- FASE 3 (NOVA) ---
+
+    // --- FASE 3 ---
     {
-        cruzada: [ /* Crie a matriz da fase 4 aqui */ ],
-        respostas: [ /* Defina as respostas da fase 4 */ ]
+        cruzada: [
+            [" ", " ", " ", " ", " ", " ", " ", " ", "3", "+", "5", "=", 0],
+            [" ", " ", " ", " ", " ", " ", " ", " ", "+", " ", " ", " ", " "],
+            ["3", "+", "2", "=", 0, " ", " ", " ", 0, " ", " ", " ", " "],
+            [" ", " ", " ", " ", "+", " ", " ", " ", "=", " ", " ", " ", " "],
+            [" ", " ", 0, " ", 0, "+", "6", "=", 0, "-", 0, "=", "1"],
+            [" ", " ", "-", " ", "=", " ", "-", " ", " ", " ", " ", " ", " "],
+            [0, "-", 0, "=", 0, " ", "1", " ", " ", " ", " ", " ", " "],
+            [" ", " ", "=", " ", " ", " ", "=", " ", " ", " ", " ", " ", " "],
+            [" ", " ", "3", " ", " ", " ", 0, "-", "3", "=", 0, " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", "+", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", 0, " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", "=", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", "8", " ", " ", " ", " "]
+        ],
+        respostas: [8, 5, 4, 5, 1, 7, 8, 8, 2, 6, 5, 2, 5]
     },
-    
-    // --- FASE 4 (NOVA) ---
+    // --- FASE 4 ---
     {
-        cruzada: [ /* Crie a matriz da fase 5 aqui */ ],
-        respostas: [ /* Defina as respostas da fase 5 */ ]
-    }
+        cruzada: [
+            [" ", " ", "7", "-", "2", "=", 0, " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "+", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", 0, "+", "5", "=", 0, " ", " ", " ", " "],
+            [" ", " ", " ", " ", "=", " ", " ", " ", "-", " ", " ", " ", " "],
+            [" ", " ", "5", "+", "4", "=", 0, " ", "5", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "-", " ", "=", " ", " ", " ", " "],
+            ["1", "+", 0, "=", "9", " ", "3", " ", 0, "+", 0, "=", "9"],
+            [" ", " ", "-", " ", " ", " ", "=", " ", " ", " ", " ", " ", "-"],
+            [" ", " ", "2", " ", "3", "+", 0, "=", 0, " ", " ", " ", "8"],
+            [" ", " ", "=", " ", "-", " ", " ", " ", " ", " ", " ", " ", "="],
+            [" ", " ", 0, "+", 0, "=", "8", " ", " ", " ", " ", " ", 0],
+            [" ", " ", " ", " ", "=", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "1", " ", " ", " ", " ", " ", " ", " ", " "]
+        ],
+        respostas: [5, 2, 7, 9, 8, 2, 7, 6, 9, 6, 2, 1]
+    },
+
+    // --- FASE 5 (EXTRA / 6ª fase) ---
+    {
+        cruzada: [
+            [" ", " ", " ", " ", " ", " ", "5", " ", " ", "3", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "101", " ", " ", "101", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", 0, " ", " ", 0, " ", " ", " "],
+            [" ", " ", " ", "2", " ", " ", 0, " ", " ", 0, " ", " ", " "],
+            [" ", " ", " ", "101", "9", "102", 0, 0, 0, 0, " ", " ", " "],
+            [" ", " ", " ", 0, " ", " ", 0, " ", " ", 0, " ", " ", " "],
+            [" ", "8", "102", 0, 0, 0, 0, " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", 0, " ", " ", " ", " ", "7", " ", " ", " ", " "],
+            [" ", "6", "102", 0, 0, 0, 0, " ", "101", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "1", " ", 0, " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "101", " ", 0, " ", " ", " ", " "],
+            [" ", " ", " ", "4", "102", 0, 0, 0, 0, 0, 0, " ", " "],
+            [" ", " ", " ", " ", " ", " ", 0, " ", 0, " ", " ", " ", " "]
+        ],
+        respostas: [
+            "C", "T", "I", "R","N", "O", "V", "E", "D", "C", "S", "O", "I", "T", "O", "I", "S", "E", "I", "S",
+            "S", "E", "Q", "U", "A", "T", "R", "O", "M", "E"
+        ]
+    },
 ];
 
 // gabarito esperado
-// 👇 ADIÇÃO 1 (CONTINUAÇÃO): ADICIONE OS GABARITOS DAS 5 FASES 👇
+// por enquanto só a fase 0 tem gabarito, as demais ficam vazias pra você preencher depois
 const gabaritos = {
     0: {
         "2-4": 2, "2-8": 4, "4-2": 4, "4-6": 3, "4-8": 1,
         "6-0": 2, "6-10": 3, "6-12": 2, "10-4": 5, "10-6": 2, "12-6": 3
     },
     1: {
-        // Crie o gabarito "linha-coluna": resposta para a fase 2
+        "0-1": 3, "0-5": 1, "4-1": 4, "4-5": 5, "4-9": 6,
+        "6-3": 4, "6-5": 5, "8-1": 2, "8-9": 6, "8-11": 1,
+        "10-7": 1, "12-5": 3
     },
     2: {
-        // Crie o gabarito "linha-coluna": resposta para a fase 3
+        "2-0": 7, "2-4": 4, "2-6": 3, "2-10": 5,
+        "4-6": 1, "4-8": 4, "4-10": 7, "8-2": 7,
+        "8-4": 6, "8-8": 1, "8-12": 4, "10-8": 6, "12-2": 3
     },
     3: {
-        // Crie o gabarito "linha-coluna": resposta para a fase 4
+        "0-12": 8, "2-4": 5, "2-8": 4, "4-2": 5, "4-4": 1,
+        "4-8": 7, "4-10": 8, "6-0": 8, "6-2": 2,
+        "6-4": 6, "8-6": 5, "8-10": 2, "10-8": 5
     },
     4: {
-        // Crie o gabarito "linha-coluna": resposta para a fase 5
+        "0-6": 5, "2-4": 2, "2-8": 7, "4-6": 9, "6-2": 8,
+        "6-8": 2, "6-10": 7, "8-6": 6, "8-8": 9,
+        "10-2": 6, "10-4": 2, "10-12": 1
+    },
+    5: {
+        "2-6": "C", "2-9": "T", "3-6": "I", "3-9": "R",
+        "4-6": "N", "4-7": "O", "4-8": "V", "4-9": "E",
+        "5-3": "D", "5-6": "C", "5-9": "S", "6-3": "O",
+        "6-4": "I", "6-5": "T", "6-6": "O", "7-3": "I",
+        "8-3": "S", "8-4": "E", "8-5": "I", "8-6": "S",
+        "9-8": "S", "10-8": "E", "11-5": "Q", "11-6": "U",
+        "11-7": "A", "11-8": "T", "11-9": "R", "11-10": "O",
+        "12-6": "M", "12-8": "E"
     }
 };
+
 
 // --- ESTADO DO JOGO ---
 let faseAtual = 0; // Esta variável será atualizada pelo código de carregamento
@@ -155,13 +255,13 @@ function reiniciarFase() {
 // --- MONTA A FASE VISUALMENTE ---
 function carregarFase(n) {
     // Verifica se a fase 'n' existe nos dados
-    if (!fases[n] || !gabaritos[n]) {
+    if (!fases[n] || !gabaritos[n] === undefined) {
         console.error(`Fase ${n} não encontrada! Carregando fase 0.`);
         n = 0; // Garante que o jogo não quebre
     }
-    
+
     faseAtual = n; // Define a fase atual do jogo
-    
+
     const { cruzada, respostas } = fases[n];
     let html = '<table style="border-collapse:collapse; border:none; background:transparent;">';
 
@@ -204,6 +304,7 @@ function carregarFase(n) {
                 const ehSimbolo = ['+', '-', '='].includes(valor);
 
                 // renderiza sempre como imagem (número OU símbolo)
+                // OBS: para a fase EXTRA, que tem "C", "T", "O", ">" e "\\/", isso aqui vai cair no else e mostrar texto mesmo.
                 const blocoImagem = `
                     <div style="
                         width:40px;
@@ -243,7 +344,7 @@ function carregarFase(n) {
     container.innerHTML = html;
 
     if (respostasContainer) {
-        respostasContainer.innerHTML = respostas.map((valor, i) => `
+        respostasContainer.innerHTML = (respostas || []).map((valor, i) => `
             <div class="resposta cor-${valor}"
                  draggable="true"
                  ondragstart="drag(event)"
@@ -293,7 +394,7 @@ function drag(ev) {
         ev.dataTransfer.setData('text/plain', ev.target.id);
         if (ev.dataTransfer.setDragImage) ev.dataTransfer.setDragImage(ev.target, 20, 20);
     } catch (e) {
-        try { ev.dataTransfer.setData('text', ev.target.id); } catch (_) {}
+        try { ev.dataTransfer.setData('text', ev.target.id); } catch (_) { }
     }
     setTimeout(() => ev.target.style.display = 'none', 0);
 }
@@ -323,21 +424,28 @@ function drop(ev) {
         const chave = `${row}-${col}`;
         const esperado = (gabaritos[faseAtual] || {})[chave];
 
+        // 👇👇 AQUI está a correção
         if (typeof esperado !== 'undefined') {
-            const valor = Number(resposta.dataset.numero);
-            if (valor === esperado) {
-                // SEU CÓDIGO DE ACERTO ORIGINAL
+            const valorBruto = resposta.dataset.numero; // vem como string sempre
+            let acertou = false;
+
+            if (typeof esperado === 'number') {
+                // fases numéricas
+                acertou = Number(valorBruto) === esperado;
+            } else {
+                // fase de letras (fase 5)
+                // normaliza para maiúsculo pra evitar erro
+                acertou = String(valorBruto).toUpperCase() === String(esperado).toUpperCase();
+            }
+
+            if (acertou) {
                 dropzone.style.background = '#c8e6c9';
                 resposta.style.background = '#c8e6c9';
                 dropzone.dataset.correta = 'true';
-                
-                tocarSom('./assets/bgm/acerto.mp3');
-                
-                // 👇 ADIÇÃO 2: CHAMA A VERIFICAÇÃO DE VITÓRIA 👇
-                verificarVitoria(); 
 
+                tocarSom('./assets/bgm/acerto.mp3');
+                verificarVitoria();
             } else {
-                // SEU CÓDIGO DE ERRO ORIGINAL
                 dropzone.style.background = 'rgba(255,0,0,0.6)';
                 resposta.style.background = 'rgba(255,0,0,0.6)';
                 dropzone.dataset.correta = 'false';
@@ -364,6 +472,7 @@ function drop(ev) {
     }
 }
 
+
 function dragend(ev) {
     if (document.getElementById(ev.target.id)) ev.target.style.display = "flex";
 }
@@ -386,72 +495,51 @@ function retornarResposta(ev) {
 }
 
 
-// --- 👇 ADIÇÃO 3: NOVAS FUNÇÕES DE VITÓRIA E PROGRESSO ---
+// --- PROGRESSO / VITÓRIA ---
 /** Salva o progresso no localStorage */
 function desbloquearProximaFase() {
-  // 1. Calcula qual é o próximo nível (ex: joguei o 0, desbloqueio o 1)
-  let proximoNivel = faseAtual + 1;
-
-  // 2. Pega o nível máximo que já estava salvo (ou 0 se for a 1ª vez)
-  let nivelMaximoSalvo = parseInt(localStorage.getItem('nivelMaximoSomaAI')) || 0;
-
-  // 3. Se o próximo nível (1) for maior que o progresso salvo (0)...
-  if (proximoNivel > nivelMaximoSalvo) {
-    // 4. Salva o novo progresso!
-    localStorage.setItem('nivelMaximoSomaAI', proximoNivel);
-    console.log("Progresso salvo! Nível " + proximoNivel + " desbloqueado.");
-  }
+    let proximoNivel = faseAtual + 1;
+    let nivelMaximoSalvo = parseInt(localStorage.getItem('nivelMaximoSomaAI')) || 0;
+    if (proximoNivel > nivelMaximoSalvo) {
+        localStorage.setItem('nivelMaximoSomaAI', proximoNivel);
+        console.log("Progresso salvo! Nível " + proximoNivel + " desbloqueado.");
+    }
 }
 
 /** Verifica se o jogador completou todas as respostas da fase */
 function verificarVitoria() {
-  // 1. Pega o total de respostas necessárias para esta fase (contando o gabarito)
-  //    Certifica-se de que o gabarito existe antes de contar
-  const gabaritoFase = gabaritos[faseAtual];
-  if (!gabaritoFase) return; // Sai se não houver gabarito
-  
-  const totalRespostas = Object.keys(gabaritoFase).length;
+    const gabaritoFase = gabaritos[faseAtual];
+    if (!gabaritoFase) return;
 
-  // 2. Pega quantas respostas corretas estão no tabuleiro
-  const respostasCorretas = document.querySelectorAll('.dropzone[data-correta="true"]').length;
+    const totalRespostas = Object.keys(gabaritoFase).length;
+    const respostasCorretas = document.querySelectorAll('.dropzone[data-correta="true"]').length;
 
-  // 3. Compara
-  if (respostasCorretas === totalRespostas) {
-    
-    // --- O JOGADOR VENCEU! ---
-    
-    // 1. Salva o progresso para desbloquear a próxima fase
-    desbloquearProximaFase();
-    
-    // 2. Toca o som de vitória
-    tocarSom('./assets/bgm/acerto.mp3');
-    
-    // 3. Avisa o jogador e o manda de volta para o menu de fases
-    setTimeout(() => {
-      alert('Fase Concluída! Você desbloqueou a próxima fase!');
-      window.location.href = 'fases.html'; // Volta para a seleção de fases
-    }, 500); // 500ms de espera para o som tocar
-  }
+    if (respostasCorretas === totalRespostas) {
+        // desbloqueia a próxima
+        desbloquearProximaFase();
+        tocarSom('./assets/bgm/acerto.mp3');
+
+        setTimeout(() => {
+            alert('Fase Concluída! Você desbloqueou a próxima fase!');
+            // VOLTA PARA A TELA INICIAL QUE JÁ TEM A SELEÇÃO DE FASES
+            window.location.href = 'index.html';
+        }, 500);
+    }
 }
+
 
 
 // --- START ---
-// 👇 ADIÇÃO 4: SUBSTITUA O 'carregarFase(0);' NO FINAL ---
-
 // 1. Pega os parâmetros da URL (ex: ?fase=1)
 const urlParams = new URLSearchParams(window.location.search);
-
 // 2. Converte o parâmetro 'fase' para um número. Se não existir, usa 0.
 let faseId = parseInt(urlParams.get('fase')) || 0;
-
 // 3. Verifica se a faseId é válida
 if (faseId < 0 || faseId >= fases.length || !fases[faseId]) {
     console.warn("ID da fase inválido. Carregando fase 0.");
-    faseId = 0; 
+    faseId = 0;
 }
-
 // 4. Carrega a fase correta vinda da URL
 carregarFase(faseId);
-
 
 // forçando um novo commit
