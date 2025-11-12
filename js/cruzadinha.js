@@ -15,7 +15,6 @@ const listaDeFundos = [
 
   // 4. Aplica o fundo e a animação no body
   document.body.style.backgroundImage = `url('./assets/imagens/fundos/${fundoEscolhido}')`;
-  document.body.style.animation = 'rolar-fundo 80s linear infinite';
 })();
 
 // --- FIM DO SCRIPT DE FUNDO ---
@@ -607,12 +606,17 @@ function verificarVitoria() {
 const urlParams = new URLSearchParams(window.location.search);
 // 2. Converte o parâmetro 'fase' para um número. Se não existir, usa 0.
 let faseId = parseInt(urlParams.get('fase')) || 0;
+
 // 3. Verifica se a faseId é válida
 if (faseId < 0 || faseId >= fases.length || !fases[faseId]) {
-    console.warn("ID da fase inválido. Carregando fase 0.");
-    faseId = 0;
+console.warn("ID da fase inválido. Carregando fase 0.");
+faseId = 0;
 }
-// 4. Carrega a fase correta vinda da URL
-carregarFase(faseId);
 
-// forçando um novo commit
+// 4. 👇 ADIÇÃO: CRIA UMA "FLAG" GLOBAL 👇
+// Define uma variável global que o som.js pode ler.
+// (O índice 5 é a sua Fase Secreta, de acordo com seu código)
+window.IS_SECRET_LEVEL = (faseId === 5); 
+
+// 5. Carrega a fase correta vinda da URL
+carregarFase(faseId);

@@ -16,11 +16,31 @@ const iconeAtivo = `
 
 // --- (NOVO) LISTA DE MÚSICAS ---
 // Nomes dos arquivos com base na sua imagem:
-const playlist = [
-  'musica1.mp3',
-  'musica2.mp3',
-  'musica3.mp3'
-];
+let playlist = []; // Inicia a playlist vazia
+
+// Verifica a flag global definida no 'cruzadinha.js'
+// (Se a flag não existir, '|| false' garante que não quebre)
+if (window.IS_SECRET_LEVEL === true) {
+    
+    // É a fase secreta! Use apenas a música secreta.
+    playlist = [
+        'secreta.mp3'
+    ];
+    
+    // Opcional: Faz a música secreta tocar em loop
+    musica.loop = true; 
+    
+} else {
+    
+    // Não é a fase secreta. Use a playlist normal.
+    playlist = [
+        'musica1.mp3',
+        'musica2.mp3',
+        'musica3.mp3'
+    ];
+    // Garante que o loop esteja desligado para a playlist aleatória
+    musica.loop = false;
+}
 
 // --- (NOVO) Variável para não repetir a mesma música
 let musicaAtual = '';

@@ -5,7 +5,10 @@
 }
 
 body {
-  /* A IMAGEM E A ANIMAÇÃO SERÃO DEFINIDAS PELO JS */
+
+  /* 👇 CORREÇÃO: Caminho sem o './assets/' (porque já estamos dentro de assets) */
+  background-image: url('./imagens/fundos/verde.jpg'); /* Fundo padrão */
+  animation: rolar-fundo 80s linear infinite;
   
   /* Mantém as propriedades de como a imagem deve se comportar */
   background-repeat: repeat-x;
@@ -630,4 +633,28 @@ body {
 #botaoMenu svg {
   width: 24px;
   height: 24px;
+}
+
+/* =========================
+   ESTILOS DA PÁGINA DE CRÉDITOS
+   ========================= */
+
+/* Estilo para os parágrafos dentro da caixa de créditos */
+.creditos-texto {
+  margin-bottom: 12px;
+  font-size: 16px; /* Tamanho bom para leitura */
+  line-height: 1.5; /* Espaçamento entre linhas */
+  color: #333; /* Cor do texto padrão */
+  font-family: Arial, sans-serif; /* Fonte mais legível para blocos de texto */
+}
+
+/* Estilo para links dentro dos parágrafos de créditos */
+.creditos-texto a {
+  color: #1976d2;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.creditos-texto a:hover {
+  text-decoration: underline;
 }
